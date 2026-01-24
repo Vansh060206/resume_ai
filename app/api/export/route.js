@@ -2,12 +2,12 @@ import { NextResponse } from 'next/server';
 import ExportService from '@/lib/services/exportService';
 
 /**
- * POST /api/export - Export analysis in various formats
+ * POST /api/export - Export analysis in PDF or DOCX format
  */
 export async function POST(req) {
     try {
         const { searchParams } = new URL(req.url);
-        const format = searchParams.get('format') || 'json';
+        const format = searchParams.get('format') || 'pdf';
 
         const data = await req.json();
 
@@ -18,94 +18,67 @@ export async function POST(req) {
             );
         }
 
-        // Handle different export formats
-        if (format === 'json') {
-            return handleJsonExport(data);
-        } else if (format === 'markdown') {
-            return handleMarkdownExport(data);
-        } else if (format === 'summary') {
-            return handleSummaryExport(data);
-        } else if (format === 'download-json') {
-            return handleJsonDownload(data);
-        } else if (format === 'download-markdown') {
-            return handleMarkdownDownload(data);
+        if (format === 'download-pdf') {
+            return await handlePdfDownload(data);
+        }
+        if (format === 'download-docx') {
+            return await handleDocxDownload(data);
         }
 
-        // Default to JSON export
-        return handleJsonExport(data);
+        if (format === 'summary') {
+            const summary = ExportService.generateSummaryStats(data);
+            return NextResponse.json({ success: true, data: summary }, { status: 200 });
+        }
+
+        return NextResponse.json(
+            { success: false, error: 'Invalid format. Use download-pdf or download-docx' },
+            { status: 400 }
+        );
     } catch (err) {
         console.error('EXPORT API ERROR:', err);
         return NextResponse.json(
-            { success: false, error: 'Failed to export data' },
+            { success: false, error: `Export failed: ${err.message}` },
             { status: 500 }
         );
     }
 }
 
-function handleJsonExport(data) {
-    const jsonExport = ExportService.generateJsonExport(data);
+async function handlePdfDownload(data) {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
+    const filename = `resume_analysis_${timestamp}.pdf`;
 
-    return NextResponse.json(
-        {
-            success: true,
-            data: jsonExport,
-            filename: `resume_analysis_${timestamp}.json`,
-        },
-        { status: 200 }
-    );
+    try {
+        const pdfBuffer = await ExportService.generatePdfReport(data);
+        return new NextResponse(pdfBuffer, {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': `attachment; filename="${filename}"`,
+                'Content-Length': pdfBuffer.length.toString(),
+            },
+        });
+    } catch (err) {
+        console.error('PDF export error:', err);
+        throw err;
+    }
 }
 
-function handleMarkdownExport(data) {
-    const markdownReport = ExportService.generateMarkdownReport(data);
+async function handleDocxDownload(data) {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
+    const filename = `resume_analysis_${timestamp}.docx`;
 
-    return NextResponse.json(
-        {
-            success: true,
-            data: markdownReport,
-            filename: `resume_analysis_${timestamp}.md`,
-        },
-        { status: 200 }
-    );
-}
-
-function handleSummaryExport(data) {
-    const summary = ExportService.generateSummaryStats(data);
-
-    return NextResponse.json(
-        {
-            success: true,
-            data: summary,
-        },
-        { status: 200 }
-    );
-}
-
-function handleJsonDownload(data) {
-    const jsonExport = ExportService.generateJsonExport(data);
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
-    const filename = `resume_analysis_${timestamp}.json`;
-
-    return new NextResponse(jsonExport, {
-        status: 200,
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Disposition': `attachment; filename="${filename}"`,
-        },
-    });
-}
-
-function handleMarkdownDownload(data) {
-    const markdownReport = ExportService.generateMarkdownReport(data);
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
-    const filename = `resume_analysis_${timestamp}.md`;
-
-    return new NextResponse(markdownReport, {
-        status: 200,
-        headers: {
-            'Content-Type': 'text/markdown',
-            'Content-Disposition': `attachment; filename="${filename}"`,
-        },
-    });
+    try {
+        const docxBuffer = await ExportService.generateDocxReport(data);
+        return new NextResponse(docxBuffer, {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'Content-Disposition': `attachment; filename="${filename}"`,
+                'Content-Length': docxBuffer.length.toString(),
+            },
+        });
+    } catch (err) {
+        console.error('DOCX export error:', err);
+        throw err;
+    }
 }

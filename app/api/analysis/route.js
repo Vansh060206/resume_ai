@@ -55,6 +55,7 @@ export async function POST(req) {
     }
 
     // Step 1: Extract text from document
+    console.log('📄 Extracting text from document...');
     const extractionResult = await DocumentExtractor.extractText(filePath, fileExtension);
 
     if (!extractionResult.success) {
@@ -76,22 +77,49 @@ export async function POST(req) {
     }
 
     const resumeText = extractionResult.text;
+    console.log('✅ Text extracted:', {
+      wordCount: extractionResult.word_count,
+      charCount: extractionResult.char_count,
+    });
 
     // Step 2: Extract skills
+    console.log('🔍 Extracting skills...');
     const skillAnalysis = SkillExtractor.analyzeSkills(resumeText);
+    console.log('✅ Skills extracted:', {
+      technicalSkills: skillAnalysis.current_skills.total_technical,
+      softSkills: skillAnalysis.current_skills.total_soft,
+      detectedRole: skillAnalysis.detected_role,
+    });
 
     // Step 3: Calculate ATS score
+    console.log('📈 Calculating ATS score...');
     const atsResult = ATSScorer.calculateAtsScore(resumeText, skillAnalysis);
+    console.log('✅ ATS score calculated:', {
+      overallScore: atsResult.overall_ats_score,
+      atsFriendly: atsResult.ats_friendly,
+    });
 
     // Step 4: AI-powered analysis
+    console.log('📊 Starting AI analysis...');
     const aiAnalyzer = new AIAnalyzer();
     const aiResult = await aiAnalyzer.analyzeResume(resumeText);
+    console.log('✅ AI analysis completed:', {
+      overallScore: aiResult.analysis.overallScore,
+      hasScores: !!aiResult.analysis.scores,
+      strengthsCount: aiResult.analysis.strengths?.length,
+      improvementsCount: aiResult.analysis.improvements?.length,
+    });
 
     // Step 5: Generate learning roadmap
+    console.log('🗺️ Generating learning roadmap...');
     const roadmapResult = RoadmapGenerator.generateRoadmap(
       skillAnalysis.suggested_skills,
       skillAnalysis.detected_role
     );
+    console.log('✅ Roadmap generated:', {
+      itemCount: roadmapResult.roadmap?.length,
+      totalTime: roadmapResult.total_estimated_time,
+    });
 
     // Clean up uploaded file
     if (filePath) {
@@ -103,6 +131,7 @@ export async function POST(req) {
     }
 
     // Compile comprehensive response
+    console.log('✨ Analysis complete! Sending response...');
     const response = {
       success: true,
       data: {
@@ -127,6 +156,7 @@ export async function POST(req) {
           items: roadmapResult.roadmap,
           phases: roadmapResult.phases,
           total_time: roadmapResult.total_estimated_time,
+          role: roadmapResult.role,
         },
       },
     };
