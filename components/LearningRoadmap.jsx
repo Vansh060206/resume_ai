@@ -14,6 +14,11 @@ import {
   Zap,
   CheckCircle2,
   Circle,
+  Download,
+  CalendarDays,
+  FileType2,
+  X,
+  Loader2,
 } from 'lucide-react'
 
 const STORAGE_PREFIX = 'roadmap_progress_'
@@ -67,6 +72,11 @@ export default function LearningRoadmap({ roadmapData }) {
   const [completedSkills, setCompletedSkills] = useState(() => loadCompleted(items))
   const [expandedIndex, setExpandedIndex] = useState(0)
   const [filter, setFilter] = useState('all') // 'all' | 'free' | 'paid'
+  const [showGenerateModal, setShowGenerateModal] = useState(false)
+  const [selectedSkill, setSelectedSkill] = useState(null)
+  const [daysInput, setDaysInput] = useState('30')
+  const [format, setFormat] = useState('pdf')
+  const [generating, setGenerating] = useState(false)
 
   const storageKey = useMemo(() => getStorageKey(items), [items])
 
@@ -98,6 +108,67 @@ export default function LearningRoadmap({ roadmapData }) {
     if (filter === 'free') return (resource.type || '').toLowerCase() === 'free'
     if (filter === 'paid') return (resource.type || '').toLowerCase() === 'paid'
     return true
+  }
+
+  const openGenerateModal = (skillItem) => {
+    setSelectedSkill(skillItem)
+    setDaysInput('30')
+    setFormat('pdf')
+    setShowGenerateModal(true)
+  }
+
+  const handleGenerateRoadmap = async () => {
+    if (!selectedSkill) return
+    const days = Number.parseInt(daysInput, 10)
+    if (!Number.isFinite(days) || days <= 0) {
+      alert('Please enter a valid number of days.')
+      return
+    }
+
+    setGenerating(true)
+    try {
+      const response = await fetch(`/api/roadmap?format=download-${format}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          skill: selectedSkill.skill,
+          days,
+          role,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Roadmap download failed')
+      }
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+
+      const contentDisposition = response.headers.get('Content-Disposition')
+      const filenameMatch = contentDisposition?.match(/filename="?(.+)"?/i)
+      const filename = filenameMatch
+        ? filenameMatch[1]
+        : `${selectedSkill.skill.toLowerCase().replace(/[^a-z0-9]+/g, '_')}_roadmap.${format}`
+
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+
+      setTimeout(() => {
+        setShowGenerateModal(false)
+        setGenerating(false)
+      }, 300)
+    } catch (error) {
+      console.error('Generate roadmap error:', error)
+      alert('Failed to generate roadmap. Please try again.')
+      setGenerating(false)
+    }
   }
 
   if (!roadmapData || !items.length) {
@@ -320,6 +391,20 @@ export default function LearningRoadmap({ roadmapData }) {
                           No {filter === 'all' ? '' : filter} resources match. Try another filter.
                         </p>
                       )}
+
+                      <div className="mt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <p className="text-xs text-gray-500">
+                          Want a day-by-day plan for this skill?
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => openGenerateModal(item)}
+                          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition shadow"
+                        >
+                          <Download size={16} />
+                          Generate Roadmap
+                        </button>
+                      </div>
                     </div>
                   </motion.div>
                 )}
@@ -341,6 +426,119 @@ export default function LearningRoadmap({ roadmapData }) {
           Mark skills complete as you learn. Your progress is saved automatically.
         </p>
       </motion.div>
+
+      <AnimatePresence>
+        {showGenerateModal && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black bg-opacity-50 z-40"
+              onClick={() => !generating && setShowGenerateModal(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            >
+              <div className="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden">
+                <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-2xl font-bold">Generate Skill Roadmap</h2>
+                      <p className="text-purple-100 text-sm mt-1">
+                        {selectedSkill?.skill || 'Selected skill'}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => !generating && setShowGenerateModal(false)}
+                      disabled={generating}
+                      className="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition disabled:opacity-50"
+                    >
+                      <X size={22} />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-6 space-y-5">
+                  <label className="block text-sm font-medium text-gray-700">
+                    How many days do you want to plan for?
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <div className="relative flex-1">
+                      <CalendarDays
+                        size={18}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                      />
+                      <input
+                        type="number"
+                        min="1"
+                        max="60"
+                        value={daysInput}
+                        onChange={(e) => setDaysInput(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        placeholder="e.g., 30"
+                        disabled={generating}
+                      />
+                    </div>
+                    <span className="text-xs text-gray-500">Max 60 days</span>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-2">Download format</p>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      {[
+                        { id: 'pdf', label: 'PDF', description: 'Great for sharing', icon: FileType2 },
+                        { id: 'docx', label: 'DOCX', description: 'Editable document', icon: FileText },
+                      ].map((option) => {
+                        const Icon = option.icon
+                        const isActive = format === option.id
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            onClick={() => setFormat(option.id)}
+                            disabled={generating}
+                            className={`flex items-center gap-3 p-3 rounded-xl border-2 text-left transition ${
+                              isActive ? 'border-purple-600 bg-purple-50' : 'border-gray-200 hover:border-purple-300'
+                            } ${generating ? 'opacity-70 cursor-not-allowed' : ''}`}
+                          >
+                            <div className="p-2 rounded-lg bg-purple-600 text-white">
+                              <Icon size={18} />
+                            </div>
+                            <div>
+                              <p className="font-semibold text-gray-900">{option.label}</p>
+                              <p className="text-xs text-gray-500">{option.description}</p>
+                            </div>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                  <p className="text-xs text-gray-500">
+                    We will tailor the roadmap to your target days.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleGenerateRoadmap}
+                    disabled={generating}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition disabled:opacity-60"
+                  >
+                    {generating ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
+                    {generating ? 'Generating...' : 'Generate & Download'}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }

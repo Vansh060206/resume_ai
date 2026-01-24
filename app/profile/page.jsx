@@ -3,7 +3,21 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { User, Mail, Phone, MapPin, Briefcase, Edit2, Save, X, ArrowLeft } from 'lucide-react'
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Briefcase,
+  Edit2,
+  Save,
+  X,
+  ArrowLeft,
+  ShieldCheck,
+  Sparkles,
+  CalendarDays,
+  BadgeCheck,
+} from 'lucide-react'
 import Link from 'next/link'
 import { userAPI } from '@/lib/api'
 
@@ -98,45 +112,52 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading profile...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your profile...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-10 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-4xl mx-auto"
+        className="max-w-6xl mx-auto space-y-6"
       >
         {/* Header */}
-        <div className="mb-8">
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium mb-4"
-          >
-            <ArrowLeft size={20} className="mr-2" />
-            Back to Dashboard
-          </Link>
-          <div className="flex justify-between items-center">
+        <div className="bg-white/80 backdrop-blur-sm border border-white/70 rounded-2xl p-6 shadow-xl">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900">My Profile</h1>
-              <p className="text-gray-600 mt-1">Manage your account information</p>
-            </div>
-            {!isEditing && (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition flex items-center gap-2"
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center text-indigo-600 hover:text-indigo-700 font-medium mb-3"
               >
-                <Edit2 size={20} />
-                Edit Profile
-              </button>
-            )}
+                <ArrowLeft size={18} className="mr-2" />
+                Back to Dashboard
+              </Link>
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Profile Center</h1>
+              <p className="text-gray-600 mt-1">Keep your details fresh to get better insights.</p>
+            </div>
+            <div className="flex items-center gap-3">
+              {!isEditing ? (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold transition flex items-center gap-2 shadow-lg"
+                >
+                  <Edit2 size={18} />
+                  Edit Profile
+                </button>
+              ) : (
+                <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full flex items-center gap-1">
+                  <Sparkles size={14} />
+                  Editing Mode
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -145,7 +166,7 @@ export default function ProfilePage() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6"
+            className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl"
           >
             {error}
           </motion.div>
@@ -155,183 +176,244 @@ export default function ProfilePage() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6"
+            className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl"
           >
             {success}
           </motion.div>
         )}
 
-        {/* Profile Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white rounded-xl shadow-lg overflow-hidden"
-        >
-          {/* Avatar Section */}
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-8 text-white">
-            <div className="flex items-center gap-6">
-              <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white font-bold text-4xl">
-                {profile.fullName?.[0]?.toUpperCase() || profile.email?.[0]?.toUpperCase() || 'U'}
-              </div>
-              <div>
-                <h2 className="text-3xl font-bold">{profile.fullName || 'User'}</h2>
-                <p className="text-white/80 text-lg">{profile.jobTitle || 'Professional'}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Form Section */}
-          <div className="p-8">
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Full Name */}
-              <div>
-                <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
-                  <User size={18} />
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={profile.fullName}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={`w-full px-4 py-3 border rounded-lg transition ${isEditing
-                      ? 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
-                    }`}
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
-                  <Mail size={18} />
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={profile.email}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={`w-full px-4 py-3 border rounded-lg transition ${isEditing
-                      ? 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
-                    }`}
-                  placeholder="your.email@example.com"
-                />
-              </div>
-
-              {/* Phone */}
-              <div>
-                <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
-                  <Phone size={18} />
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={profile.phone}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={`w-full px-4 py-3 border rounded-lg transition ${isEditing
-                      ? 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
-                    }`}
-                  placeholder="+1 (555) 123-4567"
-                />
-              </div>
-
-              {/* Location */}
-              <div>
-                <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
-                  <MapPin size={18} />
-                  Location
-                </label>
-                <input
-                  type="text"
-                  name="location"
-                  value={profile.location}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={`w-full px-4 py-3 border rounded-lg transition ${isEditing
-                      ? 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
-                    }`}
-                  placeholder="City, Country"
-                />
-              </div>
-
-              {/* Job Title */}
-              <div className="md:col-span-2">
-                <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
-                  <Briefcase size={18} />
-                  Job Title
-                </label>
-                <input
-                  type="text"
-                  name="jobTitle"
-                  value={profile.jobTitle}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className={`w-full px-4 py-3 border rounded-lg transition ${isEditing
-                      ? 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
-                    }`}
-                  placeholder="e.g., Software Engineer"
-                />
-              </div>
-
-              {/* Bio */}
-              <div className="md:col-span-2">
-                <label className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
-                  <User size={18} />
-                  Bio
-                </label>
-                <textarea
-                  name="bio"
-                  value={profile.bio}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  rows={4}
-                  className={`w-full px-4 py-3 border rounded-lg transition ${isEditing
-                      ? 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
-                    }`}
-                  placeholder="Tell us about yourself..."
-                />
+        <div className="grid lg:grid-cols-[320px_1fr] gap-6">
+          {/* Sidebar */}
+          <motion.div
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="bg-white rounded-2xl shadow-lg overflow-hidden h-fit"
+          >
+            <div className="bg-gradient-to-br from-indigo-600 via-blue-600 to-purple-600 p-6 text-white">
+              <div className="flex items-center gap-4">
+                <div className="w-20 h-20 rounded-2xl bg-white/15 border border-white/30 flex items-center justify-center text-3xl font-bold">
+                  {profile.fullName?.[0]?.toUpperCase() || profile.email?.[0]?.toUpperCase() || 'U'}
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-white/70">Profile</p>
+                  <h2 className="text-xl font-semibold">{profile.fullName || 'User'}</h2>
+                  <p className="text-white/80 text-sm">{profile.jobTitle || 'Professional'}</p>
+                </div>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            {isEditing && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex gap-4 mt-8"
-              >
-                <button
-                  onClick={handleSave}
-                  disabled={saving}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2"
+            <div className="p-6 space-y-4">
+              <div className="flex items-center gap-3 text-sm text-gray-600">
+                <Mail size={16} className="text-indigo-600" />
+                <span className="truncate">{profile.email || 'Email not set'}</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm text-gray-600">
+                <Phone size={16} className="text-indigo-600" />
+                <span>{profile.phone || 'Phone not set'}</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm text-gray-600">
+                <MapPin size={16} className="text-indigo-600" />
+                <span>{profile.location || 'Location not set'}</span>
+              </div>
+              <div className="border-t border-gray-100 pt-4 space-y-3">
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <ShieldCheck size={16} className="text-emerald-600" />
+                  Account secured
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <CalendarDays size={16} className="text-blue-600" />
+                  Joined {new Date().getFullYear()}
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <BadgeCheck size={16} className="text-purple-600" />
+                  ResumeAI Member
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Main Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="space-y-6"
+          >
+            <div className="grid sm:grid-cols-3 gap-4">
+              {[
+                { label: 'Profile Strength', value: '82%', note: 'Keep it updated', color: 'from-indigo-500 to-blue-500' },
+                { label: 'Resume Readiness', value: 'Pro', note: 'Active subscription', color: 'from-emerald-500 to-teal-500' },
+                { label: 'Insight Level', value: 'Advanced', note: 'Personalized tips', color: 'from-purple-500 to-pink-500' },
+              ].map((card) => (
+                <div
+                  key={card.label}
+                  className="bg-white rounded-2xl shadow-md p-4 border border-gray-100"
                 >
-                  <Save size={20} />
-                  {saving ? 'Saving...' : 'Save Changes'}
-                </button>
-                <button
-                  onClick={handleCancel}
-                  disabled={saving}
-                  className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:bg-gray-100 text-gray-900 px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2"
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-r ${card.color} text-white flex items-center justify-center mb-3`}>
+                    <Sparkles size={18} />
+                  </div>
+                  <p className="text-xs text-gray-500">{card.label}</p>
+                  <p className="text-lg font-semibold text-gray-900">{card.value}</p>
+                  <p className="text-xs text-gray-500 mt-1">{card.note}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+              <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900">Personal Details</h3>
+                  <p className="text-sm text-gray-500">Edit the fields below to keep your profile current.</p>
+                </div>
+                {isEditing && (
+                  <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                    Unsaved changes
+                  </span>
+                )}
+              </div>
+
+              <div className="p-6 grid md:grid-cols-2 gap-5">
+                <div>
+                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                    <User size={16} />
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={profile.fullName}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
+                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      }`}
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                    <Mail size={16} />
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={profile.email}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
+                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      }`}
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                    <Phone size={16} />
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={profile.phone}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
+                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      }`}
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                    <MapPin size={16} />
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={profile.location}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
+                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      }`}
+                    placeholder="City, Country"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                    <Briefcase size={16} />
+                    Job Title
+                  </label>
+                  <input
+                    type="text"
+                    name="jobTitle"
+                    value={profile.jobTitle}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
+                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      }`}
+                    placeholder="e.g., Software Engineer"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                    <User size={16} />
+                    Bio
+                  </label>
+                  <textarea
+                    name="bio"
+                    value={profile.bio}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    rows={4}
+                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
+                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      }`}
+                    placeholder="Tell us about yourself..."
+                  />
+                </div>
+              </div>
+
+              {isEditing && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-col sm:flex-row gap-3 px-6 pb-6"
                 >
-                  <X size={20} />
-                  Cancel
-                </button>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
+                  <button
+                    onClick={handleSave}
+                    disabled={saving}
+                    className="flex-1 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 disabled:opacity-70 text-white px-6 py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2 shadow-lg"
+                  >
+                    <Save size={18} />
+                    {saving ? 'Saving...' : 'Save Changes'}
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    disabled={saving}
+                    className="flex-1 bg-gray-100 hover:bg-gray-200 disabled:opacity-70 text-gray-900 px-6 py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2"
+                  >
+                    <X size={18} />
+                    Cancel
+                  </button>
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+        </div>
       </motion.div>
     </div>
   )
