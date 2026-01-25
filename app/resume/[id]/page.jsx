@@ -102,9 +102,10 @@ export default function ResumeViewPage() {
   const skills = analysis.skills || resumeData.skills || {}
 
   const roadmap = analysis.roadmap || {}
+  const atsData = analysis.atsScore || {}
 
   const overallScore = meta.overallScore ?? 0
-  const atsScore = meta.atsScore ?? 0
+  const atsScore = meta.atsScore ?? atsData.overall_score ?? atsData.overall_ats_score ?? 0
 
   /* ================= PDF DOWNLOAD ================= */
   const handleDownload = async () => {
@@ -230,7 +231,12 @@ export default function ResumeViewPage() {
           {/* ATS */}
           {activeTab === 'ats' && (
             <motion.div key="ats" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <ATSScoreCard atsData={{ overall_score: atsScore }} />
+              <ATSScoreCard atsData={{
+                overall_score: atsScore,
+                category_scores: atsData.category_scores || {},
+                recommendations: atsData.recommendations || [],
+                ats_friendly: atsData.ats_friendly ?? (atsScore >= 70)
+              }} />
             </motion.div>
           )}
 
