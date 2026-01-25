@@ -99,7 +99,7 @@ export default function FAQ() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-20 px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20 px-4">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -111,8 +111,8 @@ export default function FAQ() {
           variants={itemVariants}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h1>
-          <p className="text-xl text-gray-600">Find answers to common questions about ResumeAI</p>
+          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h1>
+          <p className="text-xl text-gray-600 dark:text-gray-400">Find answers to common questions about ResumeAI</p>
         </motion.div>
 
         {/* FAQ Sections */}
@@ -125,7 +125,7 @@ export default function FAQ() {
               key={sectionIdx}
               variants={itemVariants}
             >
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">{section.category}</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{section.category}</h2>
               <div className="space-y-3">
                 {section.items.map((item, itemIdx) => {
                   const uniqueIndex = sectionIdx * 10 + itemIdx
@@ -135,14 +135,14 @@ export default function FAQ() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: itemIdx * 0.05 }}
-                      className="bg-white rounded-lg shadow hover:shadow-lg transition"
+                      className="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition"
                     >
                       <motion.button
                         onClick={() => setOpenIndex(openIndex === uniqueIndex ? -1 : uniqueIndex)}
                         className="w-full flex items-center justify-between p-6 text-left"
                         whileHover={{ backgroundColor: '#f9fafb' }}
                       >
-                        <span className="font-semibold text-gray-900 pr-4">{item.q}</span>
+                        <span className="font-semibold text-gray-900 dark:text-white pr-4">{item.q}</span>
                         <motion.div
                           animate={{
                             rotate: openIndex === uniqueIndex ? 180 : 0,
@@ -162,7 +162,7 @@ export default function FAQ() {
                             transition={{ duration: 0.3 }}
                             className="border-t border-gray-200"
                           >
-                            <p className="p-6 text-gray-600 bg-gray-50">{item.a}</p>
+                            <p className="p-6 text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/50">{item.a}</p>
                           </motion.div>
                         )}
                       </AnimatePresence>

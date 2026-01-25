@@ -26,7 +26,7 @@ export default function NotFound() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -50,7 +50,7 @@ export default function NotFound() {
         {/* 404 */}
         <motion.h1
           variants={itemVariants}
-          className="text-7xl font-bold text-gray-900 mb-2"
+          className="text-7xl font-bold text-gray-900 dark:text-white mb-2"
         >
           404
         </motion.h1>
@@ -58,7 +58,7 @@ export default function NotFound() {
         {/* Heading */}
         <motion.h2
           variants={itemVariants}
-          className="text-3xl font-bold text-gray-900 mb-4"
+          className="text-3xl font-bold text-gray-900 dark:text-white mb-4"
         >
           Page Not Found
         </motion.h2>
@@ -66,7 +66,7 @@ export default function NotFound() {
         {/* Description */}
         <motion.p
           variants={itemVariants}
-          className="text-gray-600 text-lg mb-8"
+          className="text-gray-600 dark:text-gray-400 text-lg mb-8"
         >
           Oops! The page you're looking for doesn't exist or has been moved.
         </motion.p>
@@ -94,9 +94,9 @@ export default function NotFound() {
         {/* Suggestions */}
         <motion.div
           variants={itemVariants}
-          className="mt-12 p-6 bg-white rounded-lg shadow-lg"
+          className="mt-12 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg"
         >
-          <h3 className="font-semibold text-gray-900 mb-3">Quick Links</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Quick Links</h3>
           <div className="space-y-2">
             <Link href="/analyze" className="block text-blue-600 hover:text-blue-700 font-medium">
               → Analyze Resume

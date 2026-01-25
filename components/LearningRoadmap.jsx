@@ -47,7 +47,7 @@ function saveCompleted(items, completed) {
   const key = getStorageKey(items)
   try {
     localStorage.setItem(key, JSON.stringify([...completed]))
-  } catch {}
+  } catch { }
 }
 
 const RESOURCE_CONFIG = [
@@ -176,10 +176,10 @@ export default function LearningRoadmap({ roadmapData }) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="bg-white rounded-xl shadow-lg p-8 text-center"
+        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center"
       >
-        <Target className="mx-auto text-gray-300 mb-4" size={48} />
-        <p className="text-gray-500">No roadmap data available. Upload a resume to get a personalized learning path.</p>
+        <Target className="mx-auto text-gray-300 dark:text-gray-600 mb-4" size={48} />
+        <p className="text-gray-500 dark:text-gray-400">No roadmap data available. Upload a resume to get a personalized learning path.</p>
       </motion.div>
     )
   }
@@ -216,15 +216,15 @@ export default function LearningRoadmap({ roadmapData }) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white rounded-xl shadow-lg p-5 border border-gray-100"
+        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 border border-gray-100 dark:border-gray-700"
       >
         <div className="flex items-center justify-between mb-3">
-          <span className="font-semibold text-gray-900">Your Progress</span>
-          <span className="text-sm font-medium text-gray-600">
+          <span className="font-semibold text-gray-900 dark:text-white">Your Progress</span>
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
             {completedCount} of {skillCount} completed
           </span>
         </div>
-        <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
           <motion.div
             className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full"
             initial={{ width: 0 }}
@@ -246,13 +246,13 @@ export default function LearningRoadmap({ roadmapData }) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 * idx }}
-              className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
             >
               {/* Skill Header - Clickable */}
               <button
                 type="button"
                 onClick={() => setExpandedIndex(isExpanded ? -1 : idx)}
-                className="w-full flex items-center gap-4 p-5 text-left hover:bg-gray-50/50 transition"
+                className="w-full flex items-center gap-4 p-5 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition"
               >
                 {/* Tick / Checkbox */}
                 <button
@@ -277,22 +277,21 @@ export default function LearningRoadmap({ roadmapData }) {
                       <CheckCircle2 size={22} className="text-white" strokeWidth={2.5} />
                     </motion.div>
                   ) : (
-                    <Circle size={20} className="text-gray-400" strokeWidth={2} />
+                    <Circle size={20} className="text-gray-400 dark:text-gray-500" strokeWidth={2} />
                   )}
                 </button>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-bold text-gray-900 truncate">{item.skill}</h3>
-                  <p className="text-sm text-gray-500 mt-0.5 line-clamp-1">{item.description}</p>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate">{item.skill}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">{item.description}</p>
                   <div className="flex flex-wrap gap-2 mt-2">
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
-                        DIFFICULTY_COLORS[item.difficulty] || DIFFICULTY_COLORS.Intermediate
-                      }`}
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${DIFFICULTY_COLORS[item.difficulty] || DIFFICULTY_COLORS.Intermediate
+                        }`}
                     >
                       {item.difficulty || 'Intermediate'}
                     </span>
-                    <span className="inline-flex items-center gap-1 text-xs text-gray-500">
+                    <span className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                       <Clock size={12} />
                       {item.estimated_time}
                     </span>
@@ -300,9 +299,9 @@ export default function LearningRoadmap({ roadmapData }) {
                 </div>
 
                 {isExpanded ? (
-                  <ChevronUp size={22} className="text-gray-400 flex-shrink-0" />
+                  <ChevronUp size={22} className="text-gray-400 dark:text-gray-500 flex-shrink-0" />
                 ) : (
-                  <ChevronDown size={22} className="text-gray-400 flex-shrink-0" />
+                  <ChevronDown size={22} className="text-gray-400 dark:text-gray-500 flex-shrink-0" />
                 )}
               </button>
 
@@ -316,7 +315,7 @@ export default function LearningRoadmap({ roadmapData }) {
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className="overflow-hidden"
                   >
-                    <div className="px-5 pb-5 pt-0 border-t border-gray-100">
+                    <div className="px-5 pb-5 pt-0 border-t border-gray-100 dark:border-gray-700">
                       {/* Filter Tabs */}
                       <div className="flex gap-2 mb-4 mt-4">
                         {[
@@ -328,11 +327,10 @@ export default function LearningRoadmap({ roadmapData }) {
                             key={tab.id}
                             type="button"
                             onClick={() => setFilter(tab.id)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-                              filter === tab.id
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filter === tab.id
                                 ? 'bg-purple-600 text-white'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                            }`}
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                              }`}
                           >
                             {tab.label}
                           </button>
@@ -353,7 +351,7 @@ export default function LearningRoadmap({ roadmapData }) {
                               initial={{ opacity: 0, y: 8 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: 0.05 }}
-                              className="flex items-center gap-4 p-4 rounded-xl border-2 border-gray-100 hover:border-purple-200 hover:bg-purple-50/50 transition-all group"
+                              className="flex items-center gap-4 p-4 rounded-xl border-2 border-gray-100 dark:border-gray-700 hover:border-purple-200 dark:hover:border-purple-800 hover:bg-purple-50/50 dark:hover:bg-purple-900/30 transition-all group"
                             >
                               <div
                                 className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center flex-shrink-0`}
@@ -361,17 +359,16 @@ export default function LearningRoadmap({ roadmapData }) {
                                 <Icon size={20} className="text-white" />
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="font-semibold text-gray-900 group-hover:text-purple-700 truncate">
+                                <p className="font-semibold text-gray-900 dark:text-white group-hover:text-purple-700 dark:group-hover:text-purple-400 truncate">
                                   {res.name}
                                 </p>
-                                <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
+                                <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-0.5">
                                   <span>{res.source}</span>
                                   <span
-                                    className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
-                                      (res.type || '').toLowerCase() === 'paid'
+                                    className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${(res.type || '').toLowerCase() === 'paid'
                                         ? 'bg-amber-100 text-amber-700'
                                         : 'bg-green-100 text-green-700'
-                                    }`}
+                                      }`}
                                   >
                                     {res.type || 'Free'}
                                   </span>
@@ -379,7 +376,7 @@ export default function LearningRoadmap({ roadmapData }) {
                               </div>
                               <ExternalLink
                                 size={18}
-                                className="text-gray-400 group-hover:text-purple-600 flex-shrink-0"
+                                className="text-gray-400 dark:text-gray-500 group-hover:text-purple-600 dark:group-hover:text-purple-400 flex-shrink-0"
                               />
                             </motion.a>
                           )
@@ -393,7 +390,7 @@ export default function LearningRoadmap({ roadmapData }) {
                       )}
 
                       <div className="mt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                           Want a day-by-day plan for this skill?
                         </p>
                         <button
@@ -443,7 +440,7 @@ export default function LearningRoadmap({ roadmapData }) {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="fixed inset-0 z-50 flex items-center justify-center p-4"
             >
-              <div className="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden">
                 <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -464,14 +461,14 @@ export default function LearningRoadmap({ roadmapData }) {
                 </div>
 
                 <div className="p-6 space-y-5">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     How many days do you want to plan for?
                   </label>
                   <div className="flex items-center gap-3">
                     <div className="relative flex-1">
                       <CalendarDays
                         size={18}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
                       />
                       <input
                         type="number"
@@ -479,7 +476,7 @@ export default function LearningRoadmap({ roadmapData }) {
                         max="60"
                         value={daysInput}
                         onChange={(e) => setDaysInput(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                         placeholder="e.g., 30"
                         disabled={generating}
                       />
@@ -488,7 +485,7 @@ export default function LearningRoadmap({ roadmapData }) {
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium text-gray-700 mb-2">Download format</p>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Download format</p>
                     <div className="grid sm:grid-cols-2 gap-3">
                       {[
                         { id: 'pdf', label: 'PDF', description: 'Great for sharing', icon: FileType2 },
@@ -502,16 +499,15 @@ export default function LearningRoadmap({ roadmapData }) {
                             type="button"
                             onClick={() => setFormat(option.id)}
                             disabled={generating}
-                            className={`flex items-center gap-3 p-3 rounded-xl border-2 text-left transition ${
-                              isActive ? 'border-purple-600 bg-purple-50' : 'border-gray-200 hover:border-purple-300'
-                            } ${generating ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            className={`flex items-center gap-3 p-3 rounded-xl border-2 text-left transition ${isActive ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/30' : 'border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-600/50'
+                              } ${generating ? 'opacity-70 cursor-not-allowed' : ''}`}
                           >
                             <div className="p-2 rounded-lg bg-purple-600 text-white">
                               <Icon size={18} />
                             </div>
                             <div>
-                              <p className="font-semibold text-gray-900">{option.label}</p>
-                              <p className="text-xs text-gray-500">{option.description}</p>
+                              <p className="font-semibold text-gray-900 dark:text-white">{option.label}</p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">{option.description}</p>
                             </div>
                           </button>
                         )
@@ -520,8 +516,8 @@ export default function LearningRoadmap({ roadmapData }) {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-                  <p className="text-xs text-gray-500">
+                <div className="bg-gray-50 dark:bg-gray-750 px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     We will tailor the roadmap to your target days.
                   </p>
                   <button

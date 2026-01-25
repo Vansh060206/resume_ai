@@ -73,7 +73,7 @@ export default function Contact() {
   ]
 
   return (
-    <div className="min-h-screen bg-white py-20 px-4">
+    <div className="min-h-screen bg-white dark:bg-gray-900 py-20 px-4">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -85,8 +85,8 @@ export default function Contact() {
           variants={itemVariants}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">Get in Touch</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">Get in Touch</h1>
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Have a question or feedback? We'd love to hear from you.
           </p>
         </motion.div>
@@ -100,7 +100,7 @@ export default function Contact() {
                 key={idx}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
-                className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-8 text-center hover:shadow-lg transition"
+                className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-lg p-8 text-center hover:shadow-lg transition"
               >
                 <motion.div
                   whileHover={{ scale: 1.2 }}
@@ -108,8 +108,8 @@ export default function Contact() {
                 >
                   <Icon className="text-blue-600" size={40} />
                 </motion.div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{info.title}</h3>
-                <p className="text-gray-600">{info.content}</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{info.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{info.content}</p>
               </motion.div>
             )
           })}
@@ -118,9 +118,9 @@ export default function Contact() {
         {/* Contact Form */}
         <motion.div
           variants={itemVariants}
-          className="bg-gray-50 rounded-lg p-12 max-w-2xl mx-auto"
+          className="bg-gray-50 dark:bg-gray-800 rounded-lg p-12 max-w-2xl mx-auto"
         >
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">Send us a Message</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">Send us a Message</h2>
 
           {submitted && (
             <motion.div
@@ -146,7 +146,7 @@ export default function Contact() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Your name"
                 required
               />
@@ -205,7 +205,7 @@ export default function Contact() {
                 value={formData.message}
                 onChange={handleChange}
                 rows={6}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Tell us how we can help..."
                 required
               />

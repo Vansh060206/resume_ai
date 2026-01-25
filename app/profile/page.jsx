@@ -112,7 +112,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading your profile...</p>
@@ -122,14 +122,14 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-10 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-10 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="max-w-6xl mx-auto space-y-6"
       >
         {/* Header */}
-        <div className="bg-white/80 backdrop-blur-sm border border-white/70 rounded-2xl p-6 shadow-xl">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/70 dark:border-gray-700 rounded-2xl p-6 shadow-xl">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
               <Link
@@ -139,8 +139,8 @@ export default function ProfilePage() {
                 <ArrowLeft size={18} className="mr-2" />
                 Back to Dashboard
               </Link>
-              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Profile Center</h1>
-              <p className="text-gray-600 mt-1">Keep your details fresh to get better insights.</p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Profile Center</h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-1">Keep your details fresh to get better insights.</p>
             </div>
             <div className="flex items-center gap-3">
               {!isEditing ? (
@@ -187,7 +187,7 @@ export default function ProfilePage() {
           <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden h-fit"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden h-fit"
           >
             <div className="bg-gradient-to-br from-indigo-600 via-blue-600 to-purple-600 p-6 text-white">
               <div className="flex items-center gap-4">
@@ -203,28 +203,28 @@ export default function ProfilePage() {
             </div>
 
             <div className="p-6 space-y-4">
-              <div className="flex items-center gap-3 text-sm text-gray-600">
+              <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                 <Mail size={16} className="text-indigo-600" />
                 <span className="truncate">{profile.email || 'Email not set'}</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-gray-600">
+              <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                 <Phone size={16} className="text-indigo-600" />
                 <span>{profile.phone || 'Phone not set'}</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-gray-600">
+              <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                 <MapPin size={16} className="text-indigo-600" />
                 <span>{profile.location || 'Location not set'}</span>
               </div>
-              <div className="border-t border-gray-100 pt-4 space-y-3">
-                <div className="flex items-center gap-3 text-sm text-gray-600">
+              <div className="border-t border-gray-100 dark:border-gray-700 pt-4 space-y-3">
+                <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                   <ShieldCheck size={16} className="text-emerald-600" />
                   Account secured
                 </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
+                <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                   <CalendarDays size={16} className="text-blue-600" />
                   Joined {new Date().getFullYear()}
                 </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
+                <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                   <BadgeCheck size={16} className="text-purple-600" />
                   ResumeAI Member
                 </div>
@@ -246,23 +246,23 @@ export default function ProfilePage() {
               ].map((card) => (
                 <div
                   key={card.label}
-                  className="bg-white rounded-2xl shadow-md p-4 border border-gray-100"
+                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 border border-gray-100 dark:border-gray-700"
                 >
                   <div className={`w-10 h-10 rounded-xl bg-gradient-to-r ${card.color} text-white flex items-center justify-center mb-3`}>
                     <Sparkles size={18} />
                   </div>
                   <p className="text-xs text-gray-500">{card.label}</p>
-                  <p className="text-lg font-semibold text-gray-900">{card.value}</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">{card.value}</p>
                   <p className="text-xs text-gray-500 mt-1">{card.note}</p>
                 </div>
               ))}
             </div>
 
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
               <div className="p-6 border-b border-gray-100 flex items-center justify-between">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900">Personal Details</h3>
-                  <p className="text-sm text-gray-500">Edit the fields below to keep your profile current.</p>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Personal Details</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Edit the fields below to keep your profile current.</p>
                 </div>
                 {isEditing && (
                   <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
@@ -273,7 +273,7 @@ export default function ProfilePage() {
 
               <div className="p-6 grid md:grid-cols-2 gap-5">
                 <div>
-                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-2">
                     <User size={16} />
                     Full Name
                   </label>
@@ -284,15 +284,15 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     disabled={!isEditing}
                     className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      ? 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:bg-gray-700 dark:text-white'
+                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed dark:text-gray-400'
                       }`}
                     placeholder="Enter your full name"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-2">
                     <Mail size={16} />
                     Email Address
                   </label>
@@ -303,15 +303,15 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     disabled={!isEditing}
                     className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
                       }`}
                     placeholder="your.email@example.com"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-2">
                     <Phone size={16} />
                     Phone Number
                   </label>
@@ -322,15 +322,15 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     disabled={!isEditing}
                     className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
                       }`}
                     placeholder="+1 (555) 123-4567"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-2">
                     <MapPin size={16} />
                     Location
                   </label>
@@ -341,15 +341,15 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     disabled={!isEditing}
                     className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
                       }`}
                     placeholder="City, Country"
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-2">
                     <Briefcase size={16} />
                     Job Title
                   </label>
@@ -360,15 +360,15 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     disabled={!isEditing}
                     className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
                       }`}
                     placeholder="e.g., Software Engineer"
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-2">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-2">
                     <User size={16} />
                     Bio
                   </label>
@@ -379,8 +379,8 @@ export default function ProfilePage() {
                     disabled={!isEditing}
                     rows={4}
                     className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                        ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                        : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
+                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
                       }`}
                     placeholder="Tell us about yourself..."
                   />

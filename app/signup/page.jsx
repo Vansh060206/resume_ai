@@ -126,10 +126,10 @@ export default function SignUp() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-600 to-emerald-700 flex items-center justify-center px-4 py-12">
-      <motion.div className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-green-600 to-emerald-700 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 py-12">
+      <motion.div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-8 w-full max-w-md">
 
-        <h1 className="text-3xl font-bold text-center mb-6">Create Account</h1>
+        <h1 className="text-3xl font-bold text-center mb-6 text-gray-900 dark:text-white">Create Account</h1>
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
@@ -144,7 +144,7 @@ export default function SignUp() {
             placeholder="Full Name"
             value={formData.fullName}
             onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 rounded"
             required
           />
 
@@ -154,7 +154,7 @@ export default function SignUp() {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 rounded"
             required
           />
 
@@ -164,7 +164,7 @@ export default function SignUp() {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 rounded"
             required
           />
 
@@ -174,11 +174,11 @@ export default function SignUp() {
             placeholder="Confirm Password"
             value={formData.confirmPassword}
             onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 rounded"
             required
           />
 
-          <label className="flex items-center gap-2 text-sm">
+          <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
             <input
               type="checkbox"
               checked={agreedToTerms}
@@ -197,16 +197,16 @@ export default function SignUp() {
 
         {/* DIVIDER */}
         <div className="my-6 flex items-center gap-4">
-          <div className="flex-1 h-px bg-gray-300" />
-          <span className="text-gray-500 text-sm">OR</span>
-          <div className="flex-1 h-px bg-gray-300" />
+          <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
+          <span className="text-gray-500 dark:text-gray-400 text-sm">OR</span>
+          <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
         </div>
 
         {/* GOOGLE SIGN UP */}
         <button
           onClick={handleGoogleSignup}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 border py-3 rounded hover:bg-gray-50"
+          className="w-full flex items-center justify-center gap-3 border dark:border-gray-600 py-3 rounded hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
         >
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -215,7 +215,7 @@ export default function SignUp() {
           Continue with Google
         </button>
 
-        <p className="text-center mt-6">
+        <p className="text-center mt-6 text-gray-600 dark:text-gray-400">
           Already have an account?{' '}
           <Link href="/signin" className="text-green-600 font-semibold">
             Sign in

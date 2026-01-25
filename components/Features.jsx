@@ -38,7 +38,7 @@ export default function Features() {
   ]
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -47,10 +47,10 @@ export default function Features() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Powerful Features
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Everything you need to create a standout resume
           </p>
         </motion.div>
@@ -66,18 +66,18 @@ export default function Features() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
                 whileHover={{ y: -10 }}
-                className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-8 hover:shadow-lg transition"
+                className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800 rounded-lg p-8 hover:shadow-lg transition duration-300"
               >
                 <motion.div
                   whileHover={{ scale: 1.2, rotate: 10 }}
                   className="mb-4"
                 >
-                  <Icon className="text-blue-600" size={40} />
+                  <Icon className="text-blue-600 dark:text-blue-400" size={40} />
                 </motion.div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
               </motion.div>
             )
           })}

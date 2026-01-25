@@ -33,11 +33,11 @@ export default function ATSScoreCard({ atsData }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-xl shadow-lg p-6 space-y-6"
+      className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 space-y-6"
     >
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-2xl font-bold text-gray-900">ATS Compatibility Score</h3>
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">ATS Compatibility Score</h3>
         {ats_friendly ? (
           <CheckCircle2 className="text-green-600" size={32} />
         ) : (
@@ -76,7 +76,7 @@ export default function ATSScoreCard({ atsData }) {
 
       {/* Category Scores */}
       <div>
-        <h4 className="font-semibold text-gray-900 mb-4">Score Breakdown</h4>
+        <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Score Breakdown</h4>
         <div className="space-y-4">
           {categories.map((category, idx) => {
             const score = Math.round(category_scores[category.key] || 0)
@@ -91,13 +91,13 @@ export default function ATSScoreCard({ atsData }) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-xl">{category.icon}</span>
-                    <span className="font-medium text-gray-700">{category.label}</span>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{category.label}</span>
                   </div>
                   <span className={`font-bold ${score >= 80 ? 'text-green-600' : score >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
                     {score}%
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${score}%` }}
@@ -114,7 +114,7 @@ export default function ATSScoreCard({ atsData }) {
       {/* Recommendations */}
       {recommendations && recommendations.length > 0 && (
         <div>
-          <h4 className="font-semibold text-gray-900 mb-3">Recommendations</h4>
+          <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Recommendations</h4>
           <div className="space-y-2">
             {recommendations.map((rec, idx) => (
               <motion.div
@@ -122,10 +122,10 @@ export default function ATSScoreCard({ atsData }) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 + idx * 0.1 }}
-                className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200"
+                className="flex items-start gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
               >
                 <AlertCircle className="text-blue-600 flex-shrink-0 mt-0.5" size={18} />
-                <p className="text-sm text-gray-700">{rec}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">{rec}</p>
               </motion.div>
             ))}
           </div>

@@ -99,10 +99,10 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     )
@@ -129,7 +129,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -142,8 +142,8 @@ export default function Dashboard() {
           className="flex justify-between items-center mb-8"
         >
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600 mt-1">Welcome back! Here's your resume analysis summary</p>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">Welcome back! Here's your resume analysis summary</p>
           </div>
           <div className="flex gap-4">
             <Link
@@ -154,7 +154,7 @@ export default function Dashboard() {
             </Link>
             <button
               onClick={handleLogout}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-900 px-6 py-2 rounded-lg font-semibold transition"
+              className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 px-6 py-2 rounded-lg font-semibold transition"
             >
               <LogOut size={20} className="inline mr-2" />
               Sign Out
@@ -167,7 +167,7 @@ export default function Dashboard() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2"
+            className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg mb-6 flex items-center gap-2"
           >
             <AlertCircle size={20} />
             {error}
@@ -186,15 +186,15 @@ export default function Dashboard() {
                 key={idx}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
-                className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 hover:shadow-lg transition"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-600 font-medium">{stat.label}</h3>
-                  <div className="bg-blue-100 p-3 rounded-lg">
-                    <Icon className="text-blue-600" size={24} />
+                  <h3 className="text-gray-600 dark:text-gray-400 font-medium">{stat.label}</h3>
+                  <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg">
+                    <Icon className="text-blue-600 dark:text-blue-400" size={24} />
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{stat.value}</p>
                 <p className="text-sm text-green-600">{stat.change}</p>
               </motion.div>
             )
@@ -204,10 +204,10 @@ export default function Dashboard() {
         {/* Recent Analyses */}
         <motion.div
           variants={itemVariants}
-          className="bg-white rounded-lg shadow p-6"
+          className="bg-white dark:bg-gray-800 rounded-lg shadow p-6"
         >
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Recent Resumes</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Recent Resumes</h2>
             <Link href="/analyze" className="text-blue-600 hover:text-blue-700 font-medium">
               Upload New →
             </Link>
@@ -215,8 +215,8 @@ export default function Dashboard() {
 
           {resumes.length === 0 ? (
             <div className="text-center py-8">
-              <FileText size={48} className="mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-600">No resumes uploaded yet</p>
+              <FileText size={48} className="mx-auto text-gray-400 dark:text-gray-600 mb-4" />
+              <p className="text-gray-600 dark:text-gray-400">No resumes uploaded yet</p>
               <Link href="/analyze" className="text-blue-600 hover:text-blue-700 font-medium mt-2 inline-block">
                 Upload your first resume →
               </Link>
@@ -225,12 +225,12 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-4 px-4 text-gray-700 font-semibold">File Name</th>
-                    <th className="text-left py-4 px-4 text-gray-700 font-semibold">Score</th>
-                    <th className="text-left py-4 px-4 text-gray-700 font-semibold">Date</th>
-                    <th className="text-left py-4 px-4 text-gray-700 font-semibold">Status</th>
-                    <th className="text-left py-4 px-4 text-gray-700 font-semibold">Action</th>
+                  <tr className="border-b border-gray-200 dark:border-gray-700">
+                    <th className="text-left py-4 px-4 text-gray-700 dark:text-gray-300 font-semibold">File Name</th>
+                    <th className="text-left py-4 px-4 text-gray-700 dark:text-gray-300 font-semibold">Score</th>
+                    <th className="text-left py-4 px-4 text-gray-700 dark:text-gray-300 font-semibold">Date</th>
+                    <th className="text-left py-4 px-4 text-gray-700 dark:text-gray-300 font-semibold">Status</th>
+                    <th className="text-left py-4 px-4 text-gray-700 dark:text-gray-300 font-semibold">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -240,19 +240,19 @@ export default function Dashboard() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.1 }}
-                      className="border-b border-gray-100 hover:bg-gray-50 transition"
+                      className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
                     >
-                      <td className="py-4 px-4 text-gray-900">{resume.fileName}</td>
+                      <td className="py-4 px-4 text-gray-900 dark:text-white">{resume.fileName}</td>
                       <td className="py-4 px-4">
-                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
+                        <span className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 px-3 py-1 rounded-full text-sm font-semibold">
                           {resume.overallScore || resume.score || 'N/A'}
                         </span>
                       </td>
-                      <td className="py-4 px-4 text-gray-600">
+                      <td className="py-4 px-4 text-gray-600 dark:text-gray-400">
                         {new Date(resume.createdAt || resume.uploadedAt || Date.now()).toLocaleDateString()}
                       </td>
                       <td className="py-4 px-4">
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${resume.status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800'
+                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${resume.status === 'completed' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
                           }`}>
                           {resume.status.charAt(0).toUpperCase() + resume.status.slice(1)}
                         </span>

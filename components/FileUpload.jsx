@@ -128,8 +128,8 @@ export default function FileUpload({ onAnalysis }) {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`border-3 border-dashed rounded-xl p-12 text-center transition cursor-pointer ${isDragging
-          ? 'border-blue-600 bg-blue-50'
-          : 'border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100'
+          ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/10'
+          : 'border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600 dark:hover:bg-gray-700'
           }`}
         whileHover={{ scale: 1.01 }}
       >
@@ -147,10 +147,10 @@ export default function FileUpload({ onAnalysis }) {
           >
             <Upload className="text-blue-600 mx-auto mb-4" size={48} />
           </motion.div>
-          <p className="text-lg font-semibold text-gray-900 mb-2">
+          <p className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
             Drop your resume here
           </p>
-          <p className="text-gray-600">or click to browse</p>
+          <p className="text-gray-600 dark:text-gray-400">or click to browse</p>
           <p className="text-sm text-gray-500 mt-2">PDF, DOC, DOCX, TXT - Max 10MB</p>
         </label>
       </motion.div>
@@ -160,13 +160,13 @@ export default function FileUpload({ onAnalysis }) {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 flex items-center justify-between"
+          className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-4 flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
             <FileText className="text-blue-600" size={24} />
             <div>
-              <p className="font-semibold text-gray-900">{file.name}</p>
-              <p className="text-sm text-gray-600">{(file.size / 1024).toFixed(2)} KB</p>
+              <p className="font-semibold text-gray-900 dark:text-white">{file.name}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{(file.size / 1024).toFixed(2)} KB</p>
             </div>
           </div>
           <CheckCircle className="text-green-600" size={24} />

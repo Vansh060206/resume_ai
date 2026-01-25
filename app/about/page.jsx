@@ -71,7 +71,7 @@ export default function About() {
   }
 
   return (
-    <div className="min-h-screen bg-white py-20 px-4">
+    <div className="min-h-screen bg-white dark:bg-gray-900 py-20 px-4">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -83,8 +83,8 @@ export default function About() {
           variants={itemVariants}
           className="text-center mb-20"
         >
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">About ResumeAI</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">About ResumeAI</h1>
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             We believe everyone deserves a resume that opens doors. Our mission is to provide AI-powered
             insights that help job seekers create compelling, optimized resumes that get noticed.
           </p>
@@ -93,15 +93,15 @@ export default function About() {
         {/* Story Section */}
         <motion.div
           variants={itemVariants}
-          className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-12 mb-20"
+          className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-12 mb-20"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
-          <p className="text-lg text-gray-700 mb-4">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Our Story</h2>
+          <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
             ResumeAI was founded in 2023 by a team of HR experts, developers, and career coaches
             who saw a problem: talented professionals were losing opportunities simply because their
             resumes weren't optimized for modern hiring practices.
           </p>
-          <p className="text-lg text-gray-700">
+          <p className="text-lg text-gray-700 dark:text-gray-300">
             We built ResumeAI to democratize career optimization. Our AI analyzes your resume against
             industry standards and hiring trends, providing actionable feedback to help you stand out.
             Today, we've helped thousands of professionals land their dream jobs.
@@ -113,7 +113,7 @@ export default function About() {
           variants={containerVariants}
           className="mb-20"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Our Values</h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center">Our Values</h2>
           <div className="grid md:grid-cols-4 gap-8">
             {values.map((value, idx) => {
               const Icon = value.icon
@@ -122,16 +122,16 @@ export default function About() {
                   key={idx}
                   variants={itemVariants}
                   whileHover={{ y: -10 }}
-                  className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-8 text-center hover:shadow-lg transition"
+                  className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-lg p-8 text-center hover:shadow-lg transition"
                 >
                   <motion.div
                     whileHover={{ scale: 1.2, rotate: 10 }}
                     className="inline-block mb-4"
                   >
-                    <Icon className="text-blue-600" size={40} />
+                    <Icon className="text-blue-600 dark:text-blue-400" size={40} />
                   </motion.div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{value.title}</h3>
-                  <p className="text-gray-600">{value.description}</p>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{value.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400">{value.description}</p>
                 </motion.div>
               )
             })}
@@ -143,21 +143,21 @@ export default function About() {
           variants={containerVariants}
           className="mb-20"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Our Team</h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center">Our Team</h2>
           <div className="grid md:grid-cols-4 gap-8">
             {team.map((member, idx) => (
               <motion.div
                 key={idx}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
-                className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition"
+                className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition"
               >
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-32"></div>
                 <div className="p-6 -mt-8 relative">
                   <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full mx-auto mb-4"></div>
-                  <h3 className="text-lg font-semibold text-gray-900 text-center mb-1">{member.name}</h3>
-                  <p className="text-blue-600 font-medium text-center mb-2">{member.role}</p>
-                  <p className="text-gray-600 text-sm text-center">{member.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center mb-1">{member.name}</h3>
+                  <p className="text-blue-600 dark:text-blue-400 font-medium text-center mb-2">{member.role}</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm text-center">{member.description}</p>
                 </div>
               </motion.div>
             ))}

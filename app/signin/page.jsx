@@ -70,14 +70,14 @@ export default function SignIn() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md"
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-8 w-full max-w-md"
       >
 
-        <h1 className="text-3xl font-bold text-center mb-6">Welcome Back</h1>
+        <h1 className="text-3xl font-bold text-center mb-6 text-gray-900 dark:text-white">Welcome Back</h1>
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
@@ -93,7 +93,7 @@ export default function SignIn() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-lg"
+              className="w-full pl-10 pr-4 py-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
               placeholder="Email"
               required
             />
@@ -105,7 +105,7 @@ export default function SignIn() {
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-10 py-2 border rounded-lg"
+              className="w-full pl-10 pr-10 py-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
               placeholder="Password"
               required
             />
@@ -129,16 +129,16 @@ export default function SignIn() {
 
         {/* DIVIDER */}
         <div className="my-6 flex items-center gap-4">
-          <div className="flex-1 h-px bg-gray-300" />
-          <span className="text-gray-500 text-sm">OR</span>
-          <div className="flex-1 h-px bg-gray-300" />
+          <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
+          <span className="text-gray-500 dark:text-gray-400 text-sm">OR</span>
+          <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
         </div>
 
         {/* 🔵 GOOGLE LOGIN BUTTON */}
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-50"
+          className="w-full flex items-center justify-center gap-3 border dark:border-gray-600 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
         >
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -149,7 +149,7 @@ export default function SignIn() {
         </button>
 
         {/* SIGN UP */}
-        <p className="text-center text-gray-600 mt-6">
+        <p className="text-center text-gray-600 dark:text-gray-400 mt-6">
           Don’t have an account?{' '}
           <Link href="/signup" className="text-blue-600 font-semibold">
             Sign up

@@ -26,7 +26,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center px-4 py-20">
+    <section className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center px-4 py-20 transition-colors duration-300">
       <motion.div
         className="max-w-4xl mx-auto text-center"
         variants={containerVariants}
@@ -35,7 +35,7 @@ export default function Hero() {
       >
         {/* Badge */}
         <motion.div variants={itemVariants} className="mb-6">
-          <span className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
+          <span className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-semibold">
             <Sparkles size={16} />
             Powered by AI
           </span>
@@ -44,7 +44,7 @@ export default function Hero() {
         {/* Main Heading */}
         <motion.h1
           variants={itemVariants}
-          className="text-5xl md:text-7xl font-bold text-gray-900 mb-6"
+          className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-6"
         >
           Optimize Your Resume,{' '}
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -55,7 +55,7 @@ export default function Hero() {
         {/* Subheading */}
         <motion.p
           variants={itemVariants}
-          className="text-xl md:text-2xl text-gray-600 mb-8"
+          className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8"
         >
           Get AI-powered insights to improve your resume and increase your chances of getting interviews
         </motion.p>
@@ -74,7 +74,7 @@ export default function Hero() {
           </Link>
           <Link
             href="/pricing"
-            className="inline-flex items-center justify-center bg-white hover:bg-gray-50 text-blue-600 px-8 py-4 rounded-lg font-semibold border-2 border-blue-600 transition"
+            className="inline-flex items-center justify-center bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-lg font-semibold border-2 border-blue-600 dark:border-blue-500 transition"
           >
             View Pricing
           </Link>
@@ -85,17 +85,17 @@ export default function Hero() {
           variants={itemVariants}
           className="mt-16 grid md:grid-cols-3 gap-8"
         >
-          <div className="bg-white rounded-lg p-6 shadow-lg">
-            <p className="text-3xl font-bold text-blue-600 mb-2">10K+</p>
-            <p className="text-gray-600">Resumes Analyzed</p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg transition-colors duration-300">
+            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">10K+</p>
+            <p className="text-gray-600 dark:text-gray-300">Resumes Analyzed</p>
           </div>
-          <div className="bg-white rounded-lg p-6 shadow-lg">
-            <p className="text-3xl font-bold text-blue-600 mb-2">95%</p>
-            <p className="text-gray-600">Success Rate</p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg transition-colors duration-300">
+            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">95%</p>
+            <p className="text-gray-600 dark:text-gray-300">Success Rate</p>
           </div>
-          <div className="bg-white rounded-lg p-6 shadow-lg">
-            <p className="text-3xl font-bold text-blue-600 mb-2">4.8★</p>
-            <p className="text-gray-600">Average Rating</p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg transition-colors duration-300">
+            <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">4.8★</p>
+            <p className="text-gray-600 dark:text-gray-300">Average Rating</p>
           </div>
         </motion.div>
       </motion.div>

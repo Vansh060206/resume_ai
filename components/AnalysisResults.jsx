@@ -65,25 +65,25 @@ export default function AnalysisResults({ result }) {
 
       // Get the blob from response
       const blob = await response.blob()
-      
+
       // Create download link
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      
+
       // Get filename from Content-Disposition header or create one
       const contentDisposition = response.headers.get('Content-Disposition')
       const filenameMatch = contentDisposition?.match(/filename="?(.+)"?/i)
       const filename = filenameMatch ? filenameMatch[1] : `resume_analysis_${Date.now()}.${format}`
-      
+
       a.download = filename
       document.body.appendChild(a)
       a.click()
-      
+
       // Cleanup
       window.URL.revokeObjectURL(url)
       document.body.removeChild(a)
-      
+
       // Show success and close modal
       setTimeout(() => {
         setShowDownloadModal(false)
@@ -101,7 +101,7 @@ export default function AnalysisResults({ result }) {
   return (
     <div className="space-y-6">
       {/* Tabs Navigation */}
-      <div className="bg-white rounded-xl shadow-lg p-2">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-2">
         <div className="flex gap-2 overflow-x-auto">
           {tabs.map((tab) => {
             const Icon = tab.icon
@@ -110,8 +110,8 @@ export default function AnalysisResults({ result }) {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium transition whitespace-nowrap ${activeTab === tab.id
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700/50'
                   }`}
               >
                 <Icon size={18} />
@@ -149,7 +149,7 @@ export default function AnalysisResults({ result }) {
               >
                 <div className="relative w-24 h-24">
                   <svg className="w-full h-full" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" strokeWidth="8" />
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" className="stroke-gray-200 dark:stroke-gray-700" strokeWidth="8" />
                     <motion.circle
                       cx="50"
                       cy="50"
@@ -163,22 +163,22 @@ export default function AnalysisResults({ result }) {
                       animate={{ strokeDasharray: `${aiAnalysis.overallScore * 2.83} 283` }}
                       transition={{ duration: 1.5, ease: 'easeOut' }}
                     />
-                    <text x="50" y="60" textAnchor="middle" className="text-2xl font-bold fill-gray-900">
+                    <text x="50" y="60" textAnchor="middle" className="text-2xl font-bold fill-gray-900 dark:fill-white">
                       {aiAnalysis.overallScore}
                     </text>
                   </svg>
                 </div>
                 <div>
-                  <p className="text-gray-600">out of 100</p>
-                  <p className="text-sm text-gray-500 mt-1">{aiAnalysis.summary}</p>
+                  <p className="text-gray-600 dark:text-gray-400">out of 100</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{aiAnalysis.summary}</p>
                 </div>
               </motion.div>
             </motion.div>
 
             {/* Category Scores */}
             {aiAnalysis.scores && (
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Detailed Scores</h3>
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Detailed Scores</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {Object.entries(aiAnalysis.scores).map(([category, score], idx) => (
                     <motion.div
@@ -186,10 +186,10 @@ export default function AnalysisResults({ result }) {
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3 + idx * 0.1 }}
-                      className="bg-gray-50 rounded-lg p-4 text-center border border-gray-200"
+                      className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center border border-gray-200 dark:border-gray-600"
                     >
-                      <p className="text-2xl font-bold text-blue-600">{score}</p>
-                      <p className="text-sm text-gray-600 capitalize mt-1">{category}</p>
+                      <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{score}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 capitalize mt-1">{category}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -201,9 +201,9 @@ export default function AnalysisResults({ result }) {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-white rounded-xl shadow-lg p-6"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
             >
-              <h3 className="font-semibold text-gray-900 mb-4">Strengths</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Strengths</h3>
               <div className="space-y-2">
                 {aiAnalysis.strengths?.map((strength, idx) => (
                   <motion.div
@@ -211,10 +211,10 @@ export default function AnalysisResults({ result }) {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 + idx * 0.1 }}
-                    className="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200"
+                    className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
                   >
-                    <CheckCircle className="text-green-600 flex-shrink-0" size={20} />
-                    <span className="text-gray-700">{strength}</span>
+                    <CheckCircle className="text-green-600 dark:text-green-400 flex-shrink-0" size={20} />
+                    <span className="text-gray-700 dark:text-gray-300">{strength}</span>
                   </motion.div>
                 ))}
               </div>
@@ -225,9 +225,9 @@ export default function AnalysisResults({ result }) {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
-              className="bg-white rounded-xl shadow-lg p-6"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
             >
-              <h3 className="font-semibold text-gray-900 mb-4">Areas for Improvement</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Areas for Improvement</h3>
               <div className="space-y-2">
                 {aiAnalysis.improvements?.map((improvement, idx) => (
                   <motion.div
@@ -235,10 +235,10 @@ export default function AnalysisResults({ result }) {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7 + idx * 0.1 }}
-                    className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200"
+                    className="flex items-center gap-3 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800"
                   >
-                    <AlertCircle className="text-amber-600 flex-shrink-0" size={20} />
-                    <span className="text-gray-700">{improvement}</span>
+                    <AlertCircle className="text-amber-600 dark:text-amber-500 flex-shrink-0" size={20} />
+                    <span className="text-gray-700 dark:text-gray-300">{improvement}</span>
                   </motion.div>
                 ))}
               </div>
@@ -369,11 +369,10 @@ export default function AnalysisResults({ result }) {
                         whileTap={{ scale: downloading ? 1 : 0.98 }}
                         onClick={() => !downloading && handleDownload(format.id)}
                         disabled={downloading}
-                        className={`w-full p-6 rounded-xl border-2 transition-all text-left ${
-                          isDownloading
-                            ? 'border-blue-600 bg-blue-50'
-                            : 'border-gray-200 hover:border-blue-400 hover:shadow-lg'
-                        } ${downloading && !isDownloading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`w-full p-6 rounded-xl border-2 transition-all text-left ${isDownloading
+                          ? 'border-blue-600 bg-blue-50'
+                          : 'border-gray-200 hover:border-blue-400 hover:shadow-lg'
+                          } ${downloading && !isDownloading ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
                         <div className="flex items-start gap-4">
                           <div className={`p-3 rounded-xl bg-gradient-to-br ${format.color} text-white`}>
