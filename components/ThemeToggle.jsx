@@ -23,11 +23,11 @@ export function ThemeToggle() {
             aria-label="Toggle theme"
         >
             <Sun
-                className={`h-5 w-5 text-yellow-500 transition-all duration-300 absolute transform ${resolvedTheme === 'dark' ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+                className={`h-5 w-5 text-yellow-500 transition-all duration-300 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform ${resolvedTheme === 'dark' ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
                     }`}
             />
             <Moon
-                className={`h-5 w-5 text-blue-500 transition-all duration-300 transform ${resolvedTheme === 'dark' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
+                className={`h-5 w-5 text-blue-500 transition-all duration-300 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform ${resolvedTheme === 'dark' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
                     }`}
             />
             {/* Invisible spacer to set size */}

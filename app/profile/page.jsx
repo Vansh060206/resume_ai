@@ -55,7 +55,7 @@ export default function ProfilePage() {
         const profileData = response?.data?.data || {}
 
         setProfile({
-          fullName: profileData.name || storedUser.displayName || '',
+          fullName: profileData.fullName || storedUser.displayName || '',
           email: profileData.email || storedUser.email || '',
           phone: profileData.phone || '',
           location: profileData.location || '',
@@ -283,9 +283,9 @@ export default function ProfilePage() {
                     value={profile.fullName}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                      ? 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:bg-gray-700 dark:text-white'
-                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed dark:text-gray-400'
+                    className={`w-full px-4 py-3 border rounded-xl transition text-gray-900 dark:text-gray-100 ${isEditing
+                      ? 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:bg-gray-700'
+                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed text-gray-500 dark:text-gray-400'
                       }`}
                     placeholder="Enter your full name"
                   />
@@ -302,9 +302,9 @@ export default function ProfilePage() {
                     value={profile.email}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                    className={`w-full px-4 py-3 border rounded-xl transition text-gray-900 dark:text-gray-100 ${isEditing
+                      ? 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:bg-gray-700'
+                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed text-gray-500 dark:text-gray-400'
                       }`}
                     placeholder="your.email@example.com"
                   />
@@ -321,9 +321,9 @@ export default function ProfilePage() {
                     value={profile.phone}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                    className={`w-full px-4 py-3 border rounded-xl transition text-gray-900 dark:text-gray-100 ${isEditing
+                      ? 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:bg-gray-700'
+                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed text-gray-500 dark:text-gray-400'
                       }`}
                     placeholder="+1 (555) 123-4567"
                   />
@@ -340,9 +340,9 @@ export default function ProfilePage() {
                     value={profile.location}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                    className={`w-full px-4 py-3 border rounded-xl transition text-gray-900 dark:text-gray-100 ${isEditing
+                      ? 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:bg-gray-700'
+                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed text-gray-500 dark:text-gray-400'
                       }`}
                     placeholder="City, Country"
                   />
@@ -359,9 +359,9 @@ export default function ProfilePage() {
                     value={profile.jobTitle}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                    className={`w-full px-4 py-3 border rounded-xl transition text-gray-900 dark:text-gray-100 ${isEditing
+                      ? 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:bg-gray-700'
+                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed text-gray-500 dark:text-gray-400'
                       }`}
                     placeholder="e.g., Software Engineer"
                   />
@@ -378,9 +378,9 @@ export default function ProfilePage() {
                     onChange={handleChange}
                     disabled={!isEditing}
                     rows={4}
-                    className={`w-full px-4 py-3 border rounded-xl transition ${isEditing
-                      ? 'border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200'
-                      : 'border-gray-200 bg-gray-50 cursor-not-allowed'
+                    className={`w-full px-4 py-3 border rounded-xl transition text-gray-900 dark:text-gray-100 ${isEditing
+                      ? 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:bg-gray-700'
+                      : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 cursor-not-allowed text-gray-500 dark:text-gray-400'
                       }`}
                     placeholder="Tell us about yourself..."
                   />
