@@ -32,7 +32,7 @@ export default function Dashboard() {
         // Fetch user profile and resumes
         const [profileResponse, resumesResponse] = await Promise.all([
           userAPI.getProfile(),
-          resumeAPI.list(userId, 1, 10),
+          resumeAPI.list(1, 10),
         ])
 
         // Handle profile data with fallback
@@ -49,7 +49,7 @@ export default function Dashboard() {
 
         // Calculate stats
         const avgScore = resumesList.length > 0
-          ? Math.round(resumesList.reduce((sum, r) => sum + (r.overallScore || r.score || 0), 0) / resumesList.length)
+          ? Math.round(resumesList.reduce((sum, r) => sum + Number(r.overallScore ?? r.atsScore ?? 0), 0) / resumesList.length)
           : 0
 
         setStats([
@@ -57,7 +57,7 @@ export default function Dashboard() {
             icon: FileText,
             label: 'Resumes Analyzed',
             value: (profile.resumesAnalyzed || resumesList.length).toString(),
-            change: `${(profile.resumeLimit || 10) - (profile.resumesAnalyzed || resumesList.length)} remaining`,
+            change: `${Math.max(0, (profile.resumeLimit || 10) - (profile.resumesAnalyzed || resumesList.length))} remaining`,
           },
           {
             icon: TrendingUp,
@@ -252,9 +252,9 @@ export default function Dashboard() {
                         {new Date(resume.createdAt || resume.uploadedAt || Date.now()).toLocaleDateString()}
                       </td>
                       <td className="py-4 px-4">
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${resume.status === 'completed' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${(resume.status || 'completed') === 'completed' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
                           }`}>
-                          {resume.status.charAt(0).toUpperCase() + resume.status.slice(1)}
+                          {(resume.status || 'completed').charAt(0).toUpperCase() + (resume.status || 'completed').slice(1)}
                         </span>
                       </td>
                       <td className="py-4 px-4">

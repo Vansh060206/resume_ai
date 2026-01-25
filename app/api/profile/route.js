@@ -19,7 +19,7 @@ async function getUserIdFromRequest(req) {
 
 /**
  * GET /api/profile
- * Get logged-in user's profile
+ * Get logged-in user's profile with subscription and resume stats
  */
 export async function GET(req) {
   try {
@@ -37,18 +37,36 @@ export async function GET(req) {
     const decoded = await adminAuth.verifyIdToken(token)
     const userId = decoded.uid
 
-    const snapshot = await rtdb.ref(`users/${userId}`).get()
+    // Get user profile
+    const userSnapshot = await rtdb.ref(`users/${userId}`).get()
+    const userData = userSnapshot.exists() ? userSnapshot.val() : {}
 
-    const userProfile = snapshot.exists()
-      ? snapshot.val()
-      : {
-        fullName: '',
-        email: '',
-        phone: '',
-        location: '',
-        bio: '',
-        jobTitle: '',
-      }
+    // Get user's resumes count
+    const resumesSnapshot = await rtdb.ref(`resumes/${userId}`).get()
+    const resumesCount = resumesSnapshot.exists() 
+      ? Object.keys(resumesSnapshot.val()).length 
+      : 0
+
+    // Determine subscription/plan
+    const plan = userData.plan || 'free'
+    const subscription = plan === 'free' ? 'free' : plan === 'premium' ? 'premium' : 'free'
+    
+    // Set resume limits based on plan
+    const resumeLimit = plan === 'premium' ? 100 : plan === 'pro' ? 50 : 10
+
+    const userProfile = {
+      fullName: userData.fullName || '',
+      email: userData.email || decoded.email || '',
+      phone: userData.phone || '',
+      location: userData.location || '',
+      bio: userData.bio || '',
+      jobTitle: userData.jobTitle || '',
+      subscription,
+      plan,
+      resumesAnalyzed: resumesCount,
+      resumeLimit,
+      createdAt: userData.createdAt || Date.now(),
+    }
 
     return NextResponse.json(
       {

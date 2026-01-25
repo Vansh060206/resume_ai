@@ -1,96 +1,116 @@
-import { NextResponse } from 'next/server';
-import dataStore from '@/lib/storage/dataStore';
-import { v4 as uuidv4 } from 'uuid';
+import { NextResponse } from 'next/server'
+import { v4 as uuidv4 } from 'uuid'
+import { rtdb } from '@/app/firebase/admin'
+import { adminAuth } from '@/app/firebase/admin'
 
-/**
- * GET /api/resumes - List user's resumes
- */
 export async function GET(req) {
   try {
-    const { searchParams } = new URL(req.url);
-    const userId = req.headers.get('X-User-ID') || 'default_user';
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const { searchParams } = new URL(req.url)
 
-    // Get user's resumes
-    let userResumes = dataStore.getUserResumes(userId);
+    const authHeader = req.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized - No token provided' },
+        { status: 401 }
+      )
+    }
 
-    // Sort by date (newest first)
-    userResumes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const token = authHeader.split('Bearer ')[1]
+    const decoded = await adminAuth.verifyIdToken(token)
+    const userId = decoded.uid
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    
+    const snapshot = await rtdb.ref(`resumes/${userId}`).get()
 
-    // Paginate
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    const paginated = userResumes.slice(start, end);
+    let resumes = snapshot.exists()
+      ? Object.entries(snapshot.val()).map(([id, value]) => ({
+        id,
+        ...value.meta,
+      }))
+      : []
+
+    // newest first
+    resumes.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    )
+
+    const start = (page - 1) * limit
+    const paginated = resumes.slice(start, start + limit)
 
     return NextResponse.json(
       {
         success: true,
         data: {
           resumes: paginated,
-          total: userResumes.length,
+          total: resumes.length,
           page,
           limit,
-          totalPages: Math.ceil(userResumes.length / limit),
+          totalPages: Math.ceil(resumes.length / limit),
         },
       },
       { status: 200 }
-    );
-  } catch (err) {
-    console.error('GET RESUMES ERROR:', err);
+    )
+  } catch (error) {
+    console.error('GET RESUMES ERROR:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to fetch resumes' },
       { status: 500 }
-    );
+    )
   }
 }
 
-/**
- * POST /api/resumes/save-analysis - Save analysis results
- */
 export async function POST(req) {
   try {
-    const data = await req.json();
-    const userId = req.headers.get('X-User-ID') || 'default_user';
+    const body = await req.json()
+    const authHeader = req.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized - No token provided' },
+        { status: 401 }
+      )
+    }
 
-    const resumeId = uuidv4();
+    const token = authHeader.split('Bearer ')[1]
+    const decoded = await adminAuth.verifyIdToken(token)
+    const userId = decoded.uid
 
-    // Save resume metadata
+    const resumeId = uuidv4()
+    const createdAt = new Date().toISOString()
+    
     const resumeData = {
-      id: resumeId,
-      userId,
-      fileName: data.fileName || 'resume.pdf',
-      fileSize: data.fileSize || 0,
-      overallScore: data.overallScore || 0,
-      atsScore: data.atsScore || 0,
-      createdAt: new Date().toISOString(),
-    };
+      meta: {
+        fileName: body.fileName || 'resume.pdf',
+        fileSize: body.fileSize || 0,
+        overallScore: body.ai_analysis?.overallScore ?? 0,
+        atsScore: body.ats_score?.overall_score ?? 0,
+        createdAt,
+      },
+      analysis: {
+        aiAnalysis: body.ai_analysis || body.aiAnalysis || {},
+        atsScore: body.ats_score || body.atsScore || {},
+        skills: body.skills || {},
+        roadmap: body.roadmap || {},
+        riskAnalysis: body.risk_analysis || body.riskAnalysis || {},
+      },
+      extraction: body.extraction || {},
+    }
 
-    dataStore.saveResume(resumeData);
-
-    // Save analysis results
-    const analysisData = {
-      aiAnalysis: data.aiAnalysis,
-      atsScore: data.atsScore,
-      skills: data.skills,
-      roadmap: data.roadmap,
-    };
-
-    dataStore.saveAnalysis(resumeId, analysisData);
+    await rtdb.ref(`resumes/${userId}/${resumeId}`).set(resumeData)
 
     return NextResponse.json(
       {
         success: true,
-        message: 'Analysis saved successfully',
+        message: 'Resume analysis saved successfully',
         data: { resumeId },
       },
       { status: 201 }
-    );
-  } catch (err) {
-    console.error('SAVE ANALYSIS ERROR:', err);
+    )
+  } catch (error) {
+    console.error('SAVE RESUME ERROR:', error)
     return NextResponse.json(
-      { success: false, error: 'Failed to save analysis' },
+      { success: false, error: 'Failed to save resume' },
       { status: 500 }
-    );
+    )
   }
 }

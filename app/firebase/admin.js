@@ -3,9 +3,9 @@ import admin from "firebase-admin";
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
-      project_id: process.env.PROJECTID,
-      client_email: process.env.CLIENTEMAIL,
-      private_key: process.env.PRIVATEKEY
+      projectId: process.env.PROJECTID,
+      clientEmail: process.env.CLIENTEMAIL,
+      privateKey: process.env.PRIVATEKEY
         ? process.env.PRIVATEKEY.replace(/\\n/g, "\n")
         : undefined,
     }),

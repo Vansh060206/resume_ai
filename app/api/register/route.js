@@ -25,6 +25,7 @@ export async function POST(req) {
       email,
       role: "user",
       plan: "free",
+      subscription: "free",
       createdAt: Date.now(),
     });
 
