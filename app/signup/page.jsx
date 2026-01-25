@@ -125,102 +125,140 @@ export default function SignUp() {
     }
   }
 
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-600 to-emerald-700 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 py-12">
-      <motion.div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-8 w-full max-w-md">
-
-        <h1 className="text-3xl font-bold text-center mb-6 text-gray-900 dark:text-white">Create Account</h1>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
-            {error}
-          </div>
-        )}
-
-        {/* EMAIL SIGN UP */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            name="fullName"
-            placeholder="Full Name"
-            value={formData.fullName}
-            onChange={handleChange}
-            className="w-full border dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 rounded"
-            required
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-5xl bg-white dark:bg-gray-800 rounded-[30px] shadow-2xl overflow-hidden flex flex-col md:flex-row-reverse min-h-[600px]"
+      >
+        {/* RIGHT SIDE (Illustration) - reversed for sign up */}
+        <div className="w-full md:w-1/2 bg-gray-100 dark:bg-gray-700/50 hidden md:block relative overflow-hidden">
+          <img
+            src="/auth-illustration-new.jpg"
+            alt="Resume AI Authentication"
+            className="absolute inset-0 w-full h-full object-cover transform scale-x-[-1]"
           />
-
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full border dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 rounded"
-            required
-          />
-
-          <input
-            name="password"
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full border dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 rounded"
-            required
-          />
-
-          <input
-            name="confirmPassword"
-            type={showConfirmPassword ? "text" : "password"}
-            placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className="w-full border dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2 rounded"
-            required
-          />
-
-          <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-            <input
-              type="checkbox"
-              checked={agreedToTerms}
-              onChange={(e) => setAgreedToTerms(e.target.checked)}
-            />
-            I agree to terms & privacy policy
-          </label>
-
-          <button
-            disabled={loading}
-            className="w-full bg-green-600 text-white py-3 rounded font-semibold"
-          >
-            {loading ? "Creating account..." : "Create Account"}
-          </button>
-        </form>
-
-        {/* DIVIDER */}
-        <div className="my-6 flex items-center gap-4">
-          <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
-          <span className="text-gray-500 dark:text-gray-400 text-sm">OR</span>
-          <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
+          {/* Overlay gradient for theme blending */}
+          <div className="absolute inset-0 bg-green-600/10 dark:bg-green-900/40 mix-blend-overlay" />
         </div>
 
-        {/* GOOGLE SIGN UP */}
-        <button
-          onClick={handleGoogleSignup}
-          disabled={loading}
-          className="w-full flex items-center justify-center gap-3 border dark:border-gray-600 py-3 rounded hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
-        >
-          <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            className="w-5 h-5"
-          />
-          Continue with Google
-        </button>
+        {/* LEFT SIDE (Form) */}
+        <div className="w-full md:w-1/2 p-10 md:p-14 flex flex-col justify-center bg-white dark:bg-gray-800">
+          <div className="max-w-md mx-auto w-full">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Get Started With</h1>
+            <h1 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-8">Resume AI</h1>
 
-        <p className="text-center mt-6 text-gray-600 dark:text-gray-400">
-          Already have an account?{' '}
-          <Link href="/signin" className="text-green-600 font-semibold">
-            Sign in
-          </Link>
-        </p>
+            {/* GOOGLE SIGN UP */}
+            <button
+              onClick={handleGoogleSignup}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 py-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-all shadow-sm text-gray-700 dark:text-gray-200 font-medium mb-8"
+            >
+              <img
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                className="w-5 h-5"
+              />
+              Sign up with Google
+            </button>
+
+            <div className="relative mb-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white dark:bg-gray-800 text-gray-500">OR</span>
+              </div>
+            </div>
+
+            {/* EMAIL SIGN UP FORM */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="relative">
+                <User className="absolute left-4 top-3.5 text-gray-400" size={18} />
+                <input
+                  name="fullName"
+                  placeholder="Full Name"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-none rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500/20"
+                  required
+                />
+              </div>
+
+              <div className="relative">
+                <Mail className="absolute left-4 top-3.5 text-gray-400" size={18} />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-none rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500/20"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="relative">
+                  <Lock className="absolute left-4 top-3.5 text-gray-400" size={18} />
+                  <input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-none rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500/20 text-sm"
+                    required
+                  />
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-3.5 text-gray-400" size={18} />
+                  <input
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-700/50 border-none rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500/20 text-sm"
+                    required
+                  />
+                </div>
+              </div>
+
+              <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mt-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  className="rounded text-green-600 focus:ring-green-500 border-gray-300"
+                />
+                <span>I agree to the <a href="#" className="underline hover:text-green-600">Terms</a> & <a href="#" className="underline hover:text-green-600">Privacy Policy</a></span>
+              </label>
+
+              {error && (
+                <div className="text-red-500 text-sm text-center bg-red-50 dark:bg-red-900/20 py-2 rounded-lg">
+                  {error}
+                </div>
+              )}
+
+              <button
+                disabled={loading}
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-green-600/30 transition-all transform hover:scale-[1.02] mt-4"
+              >
+                {loading ? "Creating account..." : "Create Account"}
+              </button>
+            </form>
+
+            <p className="text-center text-sm text-gray-500 mt-8">
+              Already have an account?{' '}
+              <Link href="/signin" className="text-green-600 font-bold hover:underline">
+                Login
+              </Link>
+            </p>
+          </div>
+        </div>
       </motion.div>
     </div>
   )

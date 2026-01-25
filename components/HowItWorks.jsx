@@ -1,87 +1,84 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Upload, Zap, CheckCircle } from 'lucide-react'
+import { Upload, Zap, CheckCircle, ArrowRight } from 'lucide-react'
 
 export default function HowItWorks() {
   const steps = [
     {
       icon: Upload,
       title: 'Upload Your Resume',
-      description: 'Simply drag and drop your resume or click to upload',
+      description: 'Upload your current resume in PDF or DOCX format. We secure your data with enterprise-grade encryption.',
+      color: 'blue'
     },
     {
       icon: Zap,
-      title: 'AI Analysis',
-      description: 'Our AI analyzes your resume against industry standards',
+      title: 'Instant AI Analysis',
+      description: 'Our advanced algorithms scan for ATS compatibility, keyword gaps, and formatting issues in milliseconds.',
+      color: 'purple'
     },
     {
       icon: CheckCircle,
-      title: 'Get Insights',
-      description: 'Receive actionable recommendations to improve',
+      title: 'Actionable Insights',
+      description: 'Get a detailed report with specific, step-by-step recommendations to boost your interview chances.',
+      color: 'emerald'
     },
   ]
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+    <section className="py-24 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
             How It Works
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Three simple steps to improve your resume
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Transform your resume from ordinary to outstanding in three simple steps.
           </p>
         </motion.div>
 
         {/* Steps */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 relative">
+          {/* Connector Line (Desktop) */}
+          <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-blue-200 via-purple-200 to-emerald-200 dark:from-blue-900 dark:via-purple-900 dark:to-emerald-900 -z-10" />
+
           {steps.map((step, idx) => {
             const Icon = step.icon
             return (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: idx * 0.2 }}
-                className="relative"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.2 }}
+                className="relative group"
               >
-                {/* Step Number */}
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  className="flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-full font-bold text-xl mb-6 mx-auto"
-                >
-                  {idx + 1}
-                </motion.div>
+                {/* Card */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 h-full flex flex-col items-center text-center">
+                  {/* Icon Wrapper */}
+                  <div className={`w-24 h-24 rounded-2xl bg-${step.color}-50 dark:bg-${step.color}-900/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
+                    <Icon className={`text-${step.color}-600 dark:text-${step.color}-400`} size={40} />
+                  </div>
 
-                {/* Icon */}
-                <div className="flex justify-center mb-6">
-                  <motion.div
-                    whileHover={{ rotate: 15, scale: 1.1 }}
-                    className="bg-white p-4 rounded-lg shadow-lg"
-                  >
-                    <Icon className="text-blue-600" size={32} />
-                  </motion.div>
-                </div>
+                  {/* Step Number Badge */}
+                  <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-sm font-bold text-gray-500 dark:text-gray-400">
+                    {idx + 1}
+                  </div>
 
-                {/* Content */}
-                <div className="text-center">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600">{step.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {step.description}
+                  </p>
                 </div>
-
-                {/* Connector Line */}
-                {idx < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-8 right-0 w-full h-1 bg-gradient-to-r from-blue-600 to-transparent transform -translate-y-1/2 translate-x-8 -z-10" />
-                )}
               </motion.div>
             )
           })}

@@ -19,6 +19,7 @@ import {
   FileType2,
   X,
   Loader2,
+  Sparkles,
 } from 'lucide-react'
 
 const STORAGE_PREFIX = 'roadmap_progress_'
@@ -122,6 +123,14 @@ export default function LearningRoadmap({ roadmapData }) {
     const days = Number.parseInt(daysInput, 10)
     if (!Number.isFinite(days) || days <= 0) {
       alert('Please enter a valid number of days.')
+      return
+    }
+
+    if (format === 'web') {
+      // For web view, we just redirect to the new page
+      const url = `/roadmap/${encodeURIComponent(selectedSkill.skill)}?days=${days}&role=${encodeURIComponent(role)}`
+      window.open(url, '_blank')
+      setShowGenerateModal(false)
       return
     }
 
@@ -249,10 +258,17 @@ export default function LearningRoadmap({ roadmapData }) {
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
             >
               {/* Skill Header - Clickable */}
-              <button
-                type="button"
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => setExpandedIndex(isExpanded ? -1 : idx)}
-                className="w-full flex items-center gap-4 p-5 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setExpandedIndex(isExpanded ? -1 : idx)
+                  }
+                }}
+                className="w-full flex items-center gap-4 p-5 text-left hover:bg-gray-50/50 dark:hover:bg-gray-700/50 transition cursor-pointer outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
               >
                 {/* Tick / Checkbox */}
                 <button
@@ -261,7 +277,7 @@ export default function LearningRoadmap({ roadmapData }) {
                     e.stopPropagation()
                     toggleComplete(item.skill)
                   }}
-                  className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all hover:scale-110"
+                  className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   style={{
                     borderColor: isCompleted ? '#10b981' : '#d1d5db',
                     backgroundColor: isCompleted ? '#10b981' : 'transparent',
@@ -303,7 +319,7 @@ export default function LearningRoadmap({ roadmapData }) {
                 ) : (
                   <ChevronDown size={22} className="text-gray-400 dark:text-gray-500 flex-shrink-0" />
                 )}
-              </button>
+              </div>
 
               {/* Expandable Content */}
               <AnimatePresence>
@@ -328,8 +344,8 @@ export default function LearningRoadmap({ roadmapData }) {
                             type="button"
                             onClick={() => setFilter(tab.id)}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${filter === tab.id
-                                ? 'bg-purple-600 text-white'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                              ? 'bg-purple-600 text-white'
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                               }`}
                           >
                             {tab.label}
@@ -366,8 +382,8 @@ export default function LearningRoadmap({ roadmapData }) {
                                   <span>{res.source}</span>
                                   <span
                                     className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${(res.type || '').toLowerCase() === 'paid'
-                                        ? 'bg-amber-100 text-amber-700'
-                                        : 'bg-green-100 text-green-700'
+                                      ? 'bg-amber-100 text-amber-700'
+                                      : 'bg-green-100 text-green-700'
                                       }`}
                                   >
                                     {res.type || 'Free'}
@@ -485,11 +501,11 @@ export default function LearningRoadmap({ roadmapData }) {
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Download format</p>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">View Format</label>
                     <div className="grid sm:grid-cols-2 gap-3">
                       {[
-                        { id: 'pdf', label: 'PDF', description: 'Great for sharing', icon: FileType2 },
-                        { id: 'docx', label: 'DOCX', description: 'Editable document', icon: FileText },
+                        { id: 'web', label: 'Interactive Web', description: 'Track progress online', icon: Sparkles },
+                        { id: 'pdf', label: 'Download PDF', description: 'Great for sharing', icon: FileType2 },
                       ].map((option) => {
                         const Icon = option.icon
                         const isActive = format === option.id
@@ -526,8 +542,8 @@ export default function LearningRoadmap({ roadmapData }) {
                     disabled={generating}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition disabled:opacity-60"
                   >
-                    {generating ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
-                    {generating ? 'Generating...' : 'Generate & Download'}
+                    {generating ? <Loader2 size={16} className="animate-spin" /> : (format === 'web' ? <ExternalLink size={16} /> : <Download size={16} />)}
+                    {generating ? 'Generating...' : (format === 'web' ? 'Generate & View' : 'Generate & Download')}
                   </button>
                 </div>
               </div>

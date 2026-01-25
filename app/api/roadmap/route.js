@@ -38,9 +38,12 @@ export async function POST(req) {
         if (format === 'download-docx') {
             return await handleDocxDownload(roadmapResult.data);
         }
+        if (format === 'json') {
+            return NextResponse.json({ success: true, data: roadmapResult.data });
+        }
 
         return NextResponse.json(
-            { success: false, error: 'Invalid format. Use download-pdf or download-docx' },
+            { success: false, error: 'Invalid format. Use json, download-pdf, or download-docx' },
             { status: 400 }
         );
     } catch (err) {
