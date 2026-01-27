@@ -9,6 +9,7 @@ export default function SimpleThemeSwitcher() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line
     setReady(true);
   }, []);
 

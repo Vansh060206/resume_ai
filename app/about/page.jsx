@@ -29,23 +29,23 @@ export default function About() {
 
   const team = [
     {
-      name: 'Sarah Johnson',
-      role: 'Founder & CEO',
-      description: 'HR expert with 10+ years in recruitment',
+      name: 'Vansh Mankani',
+      role: 'Backend Developer',
+     
     },
     {
-      name: 'Michael Chen',
-      role: 'CTO',
-      description: 'AI/ML specialist and full-stack developer',
+      name: 'Om Nakrani',
+      role: 'Backend Developer',
+      
     },
     {
-      name: 'Emily Rodriguez',
-      role: 'Head of Product',
+      name: 'Neel Kadchha',
+      role: 'Database Engineer',
       description: 'Product strategist with career coaching background',
     },
     {
-      name: 'David Kim',
-      role: 'Lead Designer',
+      name: 'Keval Hansaliya',
+      role: 'Frontend Developer',
       description: 'UX/UI designer passionate about user experience',
     },
   ]
@@ -99,12 +99,12 @@ export default function About() {
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
             ResumeAI was founded in 2023 by a team of HR experts, developers, and career coaches
             who saw a problem: talented professionals were losing opportunities simply because their
-            resumes weren't optimized for modern hiring practices.
+            resumes weren&apos;t optimized for modern hiring practices.
           </p>
           <p className="text-lg text-gray-700 dark:text-gray-300">
             We built ResumeAI to democratize career optimization. Our AI analyzes your resume against
             industry standards and hiring trends, providing actionable feedback to help you stand out.
-            Today, we've helped thousands of professionals land their dream jobs.
+            Today, we&apos;ve helped thousands of professionals land their dream jobs.
           </p>
         </motion.div>
 

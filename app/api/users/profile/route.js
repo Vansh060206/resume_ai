@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { db } from "@/lib/firebase/admin"
+import { db } from "@/app/firebase/admin"
 
 /**
  * GET /api/profile?userId=xxx
@@ -22,13 +22,13 @@ export async function GET(req) {
     const data = snapshot.exists()
       ? snapshot.val()
       : {
-          fullName: "",
-          email: "",
-          phone: "",
-          location: "",
-          bio: "",
-          jobTitle: ""
-        }
+        fullName: "",
+        email: "",
+        phone: "",
+        location: "",
+        bio: "",
+        jobTitle: ""
+      }
 
     // Auto-create profile if missing
     if (!snapshot.exists()) {

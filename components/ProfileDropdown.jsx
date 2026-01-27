@@ -18,6 +18,7 @@ export default function ProfileDropdown() {
         if (userStr) {
             try {
                 const userData = JSON.parse(userStr)
+                // eslint-disable-next-line
                 setUser(userData)
             } catch (err) {
                 console.error('Failed to parse user data:', err)

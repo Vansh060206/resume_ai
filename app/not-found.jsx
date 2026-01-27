@@ -68,7 +68,7 @@ export default function NotFound() {
           variants={itemVariants}
           className="text-gray-600 dark:text-gray-400 text-lg mb-8"
         >
-          Oops! The page you're looking for doesn't exist or has been moved.
+          Oops! The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </motion.p>
 
         {/* CTA Buttons */}

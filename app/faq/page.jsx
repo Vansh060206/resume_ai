@@ -17,11 +17,11 @@ export default function FAQ() {
         },
         {
           q: 'Who should use ResumeAI?',
-          a: 'ResumeAI is perfect for anyone looking to improve their resume and increase their chances of getting interviews - whether you\'re a recent graduate, career-changer, or experienced professional.',
+          a: 'ResumeAI is perfect for anyone looking to improve their resume and increase their chances of getting interviews - whether you&apos;re a recent graduate, career-changer, or experienced professional.',
         },
         {
           q: 'How does ResumeAI work?',
-          a: 'Simply upload your resume, and our AI will analyze it against industry standards, ATS optimization, content quality, and more. You\'ll get a detailed report with specific, actionable recommendations.',
+          a: 'Simply upload your resume, and our AI will analyze it against industry standards, ATS optimization, content quality, and more. You&apos;ll get a detailed report with specific, actionable recommendations.',
         },
       ],
     },
@@ -34,7 +34,7 @@ export default function FAQ() {
         },
         {
           q: 'Can I cancel anytime?',
-          a: 'Absolutely! You can cancel your subscription at any time without penalties. If you cancel within 30 days, you\'ll receive a full refund.',
+          a: 'Absolutely! You can cancel your subscription at any time without penalties. If you cancel within 30 days, you&apos;ll receive a full refund.',
         },
         {
           q: 'What payment methods do you accept?',
@@ -68,7 +68,7 @@ export default function FAQ() {
         },
         {
           q: 'How long do you keep my data?',
-          a: 'You can delete your data at any time. If you don\'t use your account for 12 months, we\'ll automatically delete it.',
+          a: 'You can delete your data at any time. If you don&apos;t use your account for 12 months, we&apos;ll automatically delete it.',
         },
         {
           q: 'Do you use my resume for training?',

@@ -82,6 +82,41 @@ export async function POST(req) {
       charCount: extractionResult.char_count,
     });
 
+    // Step 1.5: Validate that the file is actually a resume
+    const textLower = resumeText.toLowerCase();
+    const resumeKeywords = ['experience', 'education', 'skills', 'summary', 'profile', 'work history', 'projects', 'achievements', 'certifications', 'contact', 'curriculum vitae', 'resume', 'employment'];
+
+    // Check for keyword matches
+    const keywordMatches = resumeKeywords.filter(k => textLower.includes(k));
+
+    // Resume Validation Logic:
+    // 1. Must contain at least 2 resume-specific keywords
+    // 2. OR Must contain "resume" or "curriculum vitae" and have sufficient length
+    // 3. Must have a minimum length (avoid empty or tiny files)
+    const isResume = (keywordMatches.length >= 2) ||
+      ((textLower.includes('resume') || textLower.includes('curriculum vitae')) && extractionResult.word_count > 50);
+
+    if (!isResume || extractionResult.word_count < 20) {
+      console.warn('⚠️ File does not appear to be a valid resume. Keywords found:', keywordMatches);
+
+      // Clean up
+      if (filePath) {
+        try {
+          await unlink(filePath);
+        } catch (e) {
+          console.error('Failed to delete temp file:', e);
+        }
+      }
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'The uploaded file does not appear to be a valid resume. Please ensure it contains sections like Experience, Education, or Skills.'
+        },
+        { status: 400 }
+      );
+    }
+
     // Step 2: Extract skills
     console.log('🔍 Extracting skills...');
     const skillAnalysis = SkillExtractor.analyzeSkills(resumeText);
@@ -121,6 +156,72 @@ export async function POST(req) {
       totalTime: roadmapResult.total_estimated_time,
     });
 
+    // ... (previous steps)
+
+    // Step 6: Save to Database
+    let resumeId = null;
+    const userId = formData.get('userId');
+
+    if (userId) {
+      console.log(`💾 Saving analysis for user: ${userId}`);
+      try {
+        // Dynamic import to avoid build issues if file is missing (though we fixed it)
+        const { db } = await import('@/app/firebase/admin');
+        const { rtdb } = await import('@/app/firebase/admin');
+
+        const database = db || rtdb; // usage fallback
+
+        if (database) {
+          resumeId = uuidv4();
+          const timestamp = new Date().toISOString();
+
+          // Structure data to match what /api/resumes (dashboard) expects
+          // Dashboard expects summary data in 'meta' object
+          const resumeData = {
+            meta: {
+              fileName: fileName,
+              fileSize: 0,
+              fileType: fileExtension,
+              overallScore: aiResult.analysis.overallScore || atsResult.overall_ats_score,
+              atsScore: atsResult.overall_ats_score,
+              trustScore: aiResult.analysis.trustScore || 85,
+              createdAt: timestamp,
+              status: 'completed'
+            },
+            analysis: {
+              aiAnalysis: aiResult.analysis,
+              atsScore: atsResult,
+              skills: skillAnalysis,
+              roadmap: roadmapResult,
+              riskAnalysis: aiResult.analysis.trustAnalysis || {}
+            },
+            extraction: {
+              word_count: extractionResult.word_count,
+              char_count: extractionResult.char_count
+            },
+            status: 'completed',
+            userId
+          };
+
+          // Save resume data to resumes/${userId}/${resumeId}
+          await database.ref(`resumes/${userId}/${resumeId}`).set(resumeData);
+
+          // Increment analysis count in users/${userId}/profile
+          const profileRef = database.ref(`users/${userId}/profile`);
+          await profileRef.child('resumesAnalyzed').transaction((current) => {
+            return (current || 0) + 1;
+          });
+
+          console.log('✅ Data saved to Firebase at resumes/' + userId);
+        } else {
+          console.error('❌ Database instance not found');
+        }
+      } catch (dbError) {
+        console.error('❌ Failed to save to database:', dbError);
+        // Continue without failing the request
+      }
+    }
+
     // Clean up uploaded file
     if (filePath) {
       try {
@@ -135,6 +236,7 @@ export async function POST(req) {
     const response = {
       success: true,
       data: {
+        id: resumeId, // Return the ID so frontend can redirect
         extraction: {
           word_count: extractionResult.word_count,
           char_count: extractionResult.char_count,
@@ -158,11 +260,16 @@ export async function POST(req) {
           total_time: roadmapResult.total_estimated_time,
           role: roadmapResult.role,
         },
+        trust: {
+          score: aiResult.analysis.trustScore,
+          analysis: aiResult.analysis.trustAnalysis
+        }
       },
     };
 
     return NextResponse.json(response, { status: 200 });
   } catch (err) {
+    // ... error handling
     console.error('ANALYSIS API ERROR:', err);
 
     // Clean up on error

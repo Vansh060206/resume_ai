@@ -15,3 +15,4 @@ if (!admin.apps.length) {
 
 export const adminAuth = admin.auth();
 export const rtdb = admin.database();
+export const db = rtdb;

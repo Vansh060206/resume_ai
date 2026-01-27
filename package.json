@@ -43,5 +43,22 @@
   "packageManager": "pnpm@8.15.4",
   "engines": {
     "node": ">=18.18.0"
-  }
+  },
+  "description": "This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
+  "main": "debug_env.cjs",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vansh060206/resume_ai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Vansh060206/resume_ai/issues"
+  },
+  "homepage": "https://github.com/Vansh060206/resume_ai#readme"
 }

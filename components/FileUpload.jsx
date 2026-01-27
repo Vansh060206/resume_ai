@@ -66,6 +66,19 @@ export default function FileUpload({ onAnalysis }) {
       const formData = new FormData()
       formData.append('file', file)
 
+      // Add userId if available
+      const userStr = localStorage.getItem('user')
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr)
+          if (user.uid) {
+            formData.append('userId', user.uid)
+          }
+        } catch (e) {
+          console.error('Failed to parse user data', e)
+        }
+      }
+
       // Simulate progress
       const progressInterval = setInterval(() => {
         setProgress(prev => Math.min(prev + 10, 90))

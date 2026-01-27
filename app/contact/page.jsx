@@ -87,7 +87,7 @@ export default function Contact() {
         >
           <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">Get in Touch</h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Have a question or feedback? We'd love to hear from you.
+            Have a question or feedback? We&apos;d love to hear from you.
           </p>
         </motion.div>
 
@@ -129,7 +129,7 @@ export default function Contact() {
               className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2"
             >
               <span>✓</span>
-              Thank you! We'll get back to you soon.
+              Thank you! We&apos;ll get back to you soon.
             </motion.div>
           )}
 

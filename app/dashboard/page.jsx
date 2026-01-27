@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { BarChart3, FileText, TrendingUp, Settings, LogOut, AlertCircle } from 'lucide-react'
+import { BarChart3, FileText, TrendingUp, Settings, LogOut, AlertCircle, Shield } from 'lucide-react'
 import Link from 'next/link'
 import { resumeAPI, userAPI, authAPI } from '@/lib/api'
 
@@ -143,7 +143,7 @@ export default function Dashboard() {
         >
           <div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">Welcome back! Here's your resume analysis summary</p>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">Welcome back! Here&apos;s your resume analysis summary</p>
           </div>
           <div className="flex gap-4">
             <Link
@@ -263,6 +263,13 @@ export default function Dashboard() {
                           className="text-blue-600 hover:text-blue-700 font-medium"
                         >
                           View →
+                        </Link>
+                        <Link
+                          href={`/resume/${resume.id}/trust`}
+                          target="_blank"
+                          className="text-purple-600 hover:text-purple-700 font-medium ml-4 flex items-center gap-1 inline-flex"
+                        >
+                          <Shield size={14} /> Trust Check
                         </Link>
                       </td>
                     </motion.tr>
