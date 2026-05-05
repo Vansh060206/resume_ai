@@ -10,6 +10,13 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '10mb',
     },
+    outputFileTracingExcludes: {
+      '*': [
+        '**/.pnpm-store/**/*',
+        './.pnpm-store/**/*',
+        '**/.git/**/*',
+      ],
+    },
   },
 };
 
