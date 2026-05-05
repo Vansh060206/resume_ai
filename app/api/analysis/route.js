@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { writeFile, unlink } from 'fs/promises';
 import { join } from 'path';
+import os from 'os';
 import { v4 as uuidv4 } from 'uuid';
 import DocumentExtractor from '@/lib/services/documentExtractor';
 import AIAnalyzer from '@/lib/services/aiAnalyzer';
@@ -42,17 +43,10 @@ export async function POST(req) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const tempFileName = `${uuidv4()}.${fileExtension}`;
-    filePath = join(process.cwd(), 'tmp', tempFileName);
+    filePath = join(os.tmpdir(), tempFileName);
 
-    // Ensure tmp directory exists
-    try {
-      await writeFile(filePath, buffer);
-    } catch (err) {
-      // Create tmp directory if it doesn't exist
-      const { mkdir } = await import('fs/promises');
-      await mkdir(join(process.cwd(), 'tmp'), { recursive: true });
-      await writeFile(filePath, buffer);
-    }
+    // Save file to system temp directory
+    await writeFile(filePath, buffer);
 
     // Step 1: Extract text from document
     console.log('📄 Extracting text from document...');
