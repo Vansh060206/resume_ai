@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { adminAuth, rtdb } from '@/app/firebase/admin'
 
+export const dynamic = 'force-dynamic';
+
 /**
  * Helper: Verify Firebase token and get userId
  */

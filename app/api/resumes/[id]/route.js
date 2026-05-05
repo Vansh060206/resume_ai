@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+export const dynamic = 'force-dynamic';
 import { rtdb } from '@/app/firebase/admin'
 import { adminAuth } from '@/app/firebase/admin'
 

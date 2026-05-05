@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
 import { adminAuth, rtdb } from "@/app/firebase/admin";
 import { sendEmail } from "@/lib/services/mailer";
 import { registrationEmail } from "@/lib/emailTemplates/registration";

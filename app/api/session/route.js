@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+export const dynamic = 'force-dynamic';
 import { adminAuth } from "@/app/firebase/admin";
 
 export async function POST(req) {

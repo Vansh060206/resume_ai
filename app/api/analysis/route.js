@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic';
 import { writeFile, unlink } from 'fs/promises';
 import { join } from 'path';
 import os from 'os';
