@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
-import { writeFile, unlink } from 'fs/promises';
-import { join } from 'path';
-import os from 'os';
 import { v4 as uuidv4 } from 'uuid';
 import DocumentExtractor from '@/lib/services/documentExtractor';
 import AIAnalyzer from '@/lib/services/aiAnalyzer';
@@ -15,8 +12,6 @@ import RoadmapGenerator from '@/lib/services/roadmapGenerator';
  * Complete AI-powered resume analysis
  */
 export async function POST(req) {
-  let filePath = null;
-
   try {
     const formData = await req.formData();
     const file = formData.get('file');
@@ -40,28 +35,15 @@ export async function POST(req) {
       );
     }
 
-    // Save file temporarily
+    // Process file in memory buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const tempFileName = `${uuidv4()}.${fileExtension}`;
-    filePath = join(os.tmpdir(), tempFileName);
-
-    // Save file to system temp directory
-    await writeFile(filePath, buffer);
 
     // Step 1: Extract text from document
     console.log('📄 Extracting text from document...');
-    const extractionResult = await DocumentExtractor.extractText(filePath, fileExtension);
+    const extractionResult = await DocumentExtractor.extractText(buffer, fileExtension);
 
     if (!extractionResult.success) {
-      // Clean up
-      if (filePath) {
-        try {
-          await unlink(filePath);
-        } catch (e) {
-          console.error('Failed to delete temp file:', e);
-        }
-      }
       return NextResponse.json(
         {
           success: false,
@@ -94,14 +76,6 @@ export async function POST(req) {
     if (!isResume || extractionResult.word_count < 20) {
       console.warn('⚠️ File does not appear to be a valid resume. Keywords found:', keywordMatches);
 
-      // Clean up
-      if (filePath) {
-        try {
-          await unlink(filePath);
-        } catch (e) {
-          console.error('Failed to delete temp file:', e);
-        }
-      }
 
       return NextResponse.json(
         {
@@ -217,14 +191,6 @@ export async function POST(req) {
       }
     }
 
-    // Clean up uploaded file
-    if (filePath) {
-      try {
-        await unlink(filePath);
-      } catch (e) {
-        console.error('Failed to delete temp file:', e);
-      }
-    }
 
     // Compile comprehensive response
     console.log('✨ Analysis complete! Sending response...');
@@ -267,14 +233,6 @@ export async function POST(req) {
     // ... error handling
     console.error('ANALYSIS API ERROR:', err);
 
-    // Clean up on error
-    if (filePath) {
-      try {
-        await unlink(filePath);
-      } catch (e) {
-        console.error('Failed to delete temp file:', e);
-      }
-    }
 
     return NextResponse.json(
       { success: false, error: `Analysis failed: ${err.message}` },
