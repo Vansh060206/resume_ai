@@ -219,7 +219,6 @@ export async function POST(req) {
     };
 
     return NextResponse.json(response, { status: 200 });
-Response.json(response, { status: 200 });
   } catch (err) {
     // ... error handling
     console.error('ANALYSIS API ERROR:', err);
