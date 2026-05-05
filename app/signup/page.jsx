@@ -118,8 +118,12 @@ export default function SignUp() {
 
       router.push("/dashboard")
     } catch (err) {
-      console.error(err)
-      setError("Google sign up failed")
+      console.error("Firebase Login Error:", err)
+      let msg = "Google signup failed"
+      if (err.code === "auth/popup-blocked") msg = "Popup blocked! Please allow popups for this site."
+      if (err.code === "auth/unauthorized-domain") msg = "This domain is not authorized in Firebase Console."
+      
+      setError(`${msg} (${err.code || err.message})`)
     } finally {
       setLoading(false)
     }

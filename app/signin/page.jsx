@@ -62,8 +62,14 @@ export default function SignIn() {
 
       router.push("/dashboard")
     } catch (err) {
-      console.error(err)
-      setError("Google login failed")
+      console.error("Firebase Login Error:", err)
+      // Extract specific error messages for better user feedback
+      let msg = "Google login failed"
+      if (err.code === "auth/popup-blocked") msg = "Popup blocked! Please allow popups for this site."
+      if (err.code === "auth/cancelled-popup-request") msg = "Login cancelled."
+      if (err.code === "auth/unauthorized-domain") msg = "This domain is not authorized in Firebase Console."
+      
+      setError(`${msg} (${err.code || err.message})`)
     } finally {
       setLoading(false)
     }
