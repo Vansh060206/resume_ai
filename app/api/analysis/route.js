@@ -100,32 +100,33 @@ export async function POST(req) {
     const atsResult = ATSScorer.calculateAtsScore(resumeText, skillAnalysis);
     console.log('✅ ATS score calculated:', {
       overallScore: atsResult.overall_ats_score,
-      atsFriendly: atsResult.ats_friendly,
-    });
-
-    // Step 4: AI-powered analysis
-    console.log('📊 Starting AI analysis...');
-    const aiAnalyzer = new AIAnalyzer();
-    const aiResult = await aiAnalyzer.analyzeResume(resumeText);
-    console.log('✅ AI analysis completed:', {
-      overallScore: aiResult.analysis.overallScore,
-      hasScores: !!aiResult.analysis.scores,
-      strengthsCount: aiResult.analysis.strengths?.length,
-      improvementsCount: aiResult.analysis.improvements?.length,
-    });
+      atsFriendly: atsResult.ats_    // Step 4: AI-powered analysis
+    let aiResult;
+    try {
+      console.log('📊 Starting AI analysis...');
+      const aiAnalyzer = new AIAnalyzer();
+      aiResult = await aiAnalyzer.analyzeResume(resumeText);
+      console.log('✅ AI analysis completed');
+    } catch (aiErr) {
+      console.error('❌ AI Analysis Failed:', aiErr);
+      return NextResponse.json(
+        { success: false, error: `AI Analysis failed: ${aiErr.message}. Check if your GEMINI_API_KEY is valid.` },
+        { status: 500 }
+      );
+    }
 
     // Step 5: Generate learning roadmap
-    console.log('🗺️ Generating learning roadmap...');
-    const roadmapResult = RoadmapGenerator.generateRoadmap(
-      skillAnalysis.suggested_skills,
-      skillAnalysis.detected_role
-    );
-    console.log('✅ Roadmap generated:', {
-      itemCount: roadmapResult.roadmap?.length,
-      totalTime: roadmapResult.total_estimated_time,
-    });
-
-    // ... (previous steps)
+    let roadmapResult;
+    try {
+      console.log('🗺️ Generating learning roadmap...');
+      roadmapResult = RoadmapGenerator.generateRoadmap(
+        skillAnalysis.suggested_skills,
+        skillAnalysis.detected_role
+      );
+    } catch (roadmapErr) {
+      console.error('❌ Roadmap Generation Failed:', roadmapErr);
+      roadmapResult = { roadmap: [], total_estimated_time: 'N/A' };
+    }
 
     // Step 6: Save to Database
     let resumeId = null;
@@ -134,18 +135,13 @@ export async function POST(req) {
     if (userId) {
       console.log(`💾 Saving analysis for user: ${userId}`);
       try {
-        // Dynamic import to avoid build issues if file is missing (though we fixed it)
         const { db } = await import('@/app/firebase/admin');
-        const { rtdb } = await import('@/app/firebase/admin');
-
-        const database = db || rtdb; // usage fallback
+        const database = db;
 
         if (database) {
           resumeId = uuidv4();
           const timestamp = new Date().toISOString();
 
-          // Structure data to match what /api/resumes (dashboard) expects
-          // Dashboard expects summary data in 'meta' object
           const resumeData = {
             meta: {
               fileName: fileName,
@@ -172,32 +168,26 @@ export async function POST(req) {
             userId
           };
 
-          // Save resume data to resumes/${userId}/${resumeId}
           await database.ref(`resumes/${userId}/${resumeId}`).set(resumeData);
-
-          // Increment analysis count in users/${userId}/profile
+          
           const profileRef = database.ref(`users/${userId}/profile`);
           await profileRef.child('resumesAnalyzed').transaction((current) => {
             return (current || 0) + 1;
           });
 
-          console.log('✅ Data saved to Firebase at resumes/' + userId);
-        } else {
-          console.error('❌ Database instance not found');
+          console.log('✅ Data saved to Firebase');
         }
       } catch (dbError) {
-        console.error('❌ Failed to save to database:', dbError);
-        // Continue without failing the request
+        console.error('❌ Database Save Failed:', dbError);
+        // We don't return 500 here so the user at least gets their analysis results
       }
     }
 
-
     // Compile comprehensive response
-    console.log('✨ Analysis complete! Sending response...');
     const response = {
       success: true,
       data: {
-        id: resumeId, // Return the ID so frontend can redirect
+        id: resumeId,
         extraction: {
           word_count: extractionResult.word_count,
           char_count: extractionResult.char_count,
@@ -229,6 +219,7 @@ export async function POST(req) {
     };
 
     return NextResponse.json(response, { status: 200 });
+Response.json(response, { status: 200 });
   } catch (err) {
     // ... error handling
     console.error('ANALYSIS API ERROR:', err);
