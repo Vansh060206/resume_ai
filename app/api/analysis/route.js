@@ -100,7 +100,10 @@ export async function POST(req) {
     const atsResult = ATSScorer.calculateAtsScore(resumeText, skillAnalysis);
     console.log('✅ ATS score calculated:', {
       overallScore: atsResult.overall_ats_score,
-      atsFriendly: atsResult.ats_    // Step 4: AI-powered analysis
+      atsFriendly: atsResult.ats_friendly,
+    });
+
+    // Step 4: AI-powered analysis
     let aiResult;
     try {
       console.log('📊 Starting AI analysis...');
